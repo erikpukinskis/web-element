@@ -43,7 +43,7 @@ define(
     }
 
     function isASelector(string) {
-      return !!string.match(/^(img|a|div|input|button|p|h1)?(\.[^.]+)*$/)
+      return !!string.match(/^(img|a|div|input|button|p|h1|script|head|html|body)?(\.[^.]+)*$/)
     }
 
     function parseSelector(selector) {
