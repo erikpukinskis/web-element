@@ -1,0 +1,20 @@
+{
+  "name": "nrtv-element",
+  "version": "0.1.0",
+  "description": "Generate HTML",
+  "main": "element.js",
+  "test": "test.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikpukinskis/nrtv-element.git"
+  },
+  "dependencies": {
+    "extend": "*",
+    "requirejs": "*"
+  },
+  "devDependencies": {
+    "chai": "*"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/erikpukinskis/nrtv-element"
+}
