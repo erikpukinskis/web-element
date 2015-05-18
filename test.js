@@ -1,8 +1,8 @@
 requirejs = require("requirejs")
 
 requirejs(
-  ["element", "nrtv-element", "chai"],
-  function(x, element, chai) {
+  ["element", "chai"],
+  function(element, chai) {
     var expect = chai.expect
 
     expect(element(".fancy")).to.equal("<div class=\"fancy\"></div>")
