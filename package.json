@@ -1,9 +1,11 @@
 {
   "name": "nrtv-element",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Generate HTML",
   "main": "element.js",
-  "test": "test.js",
+  "scripts": {
+    "test": "node test.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/erikpukinskis/nrtv-element.git"
