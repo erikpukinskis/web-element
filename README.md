@@ -8,7 +8,7 @@ You can pass in a selector, attributes, and contents and it gives you back some 
       "button.small", 
       {onclick: "doSomething()"},
       "DO IT"
-    )
+    ).html()
 
 Should generate:
 
@@ -21,7 +21,7 @@ You can also pass arrays and it will try to turn the elements into HTML.
       ".some.classes",
       "<some>HTML</some>",
       element("a", {href: "/"}, "ok")
-    ])
+    ]).html()
 
 Should generate:
 
