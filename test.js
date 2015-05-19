@@ -26,5 +26,12 @@ requirejs(
     expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
     console.log("DING!")
 
+    var el = element()
+    var id = el.assignId()
+    expect(el.id).to.match(/el-[a-z0-9]{3}/)
+    expect(id).to.equal(el.id)
+    expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
+
+    console.log("DING DING DING DING!")
   }
 )

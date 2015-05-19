@@ -72,6 +72,10 @@ define(
       function(el) {
         html = "<" + this.tagName
 
+        if (this.id) {
+          html = html + " id=\"" + this.id + "\""
+        }
+
         if (this.classString) {
           html = html + " class=\"" + this.classString + "\""
         }
@@ -92,6 +96,15 @@ define(
         html = html + "</" + this.tagName + ">"   
 
         return html 
+      }
+
+    Element.next = 10000
+    Element.prototype.assignId =
+      function() {
+        this.id = "el-"+(
+          Element.next++
+        ).toString(36)
+        return this.id
       }
 
     return element
