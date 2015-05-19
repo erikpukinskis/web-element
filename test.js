@@ -5,28 +5,26 @@ requirejs(
   function(element, chai) {
     var expect = chai.expect
 
-    expect(element(".fancy")).to.equal("<div class=\"fancy\"></div>")
+    expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")
 
-    expect(element("img")).to.equal("<img></img>")
+    expect(element("img").html()).to.equal("<img></img>")
     console.log("DING!")
 
-    expect(element(".fancy", "party")).to.equal("<div class=\"fancy\">party</div>")
+    expect(element(".fancy", "party").html()).to.equal("<div class=\"fancy\">party</div>")
     console.log("DING!")
 
-    expect(element({onclick: "doSomething()"})).to.equal("<div onclick=\"doSomething()\"></div>")
+    expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick=\"doSomething()\"></div>")
     console.log("DING!")
 
-    expect(element("hi")).to.equal("<div>hi</div>")
+    expect(element("hi").html()).to.equal("<div>hi</div>")
     console.log("DING!")
 
-    expect(element("<br>")).to.equal("<div><br></div>")
+    expect(element("<br>").html()).to.equal("<div><br></div>")
     console.log("DING!")
 
-    expect(element(["<a></a>", "<b></b>"])).to.equal("<div><a></a><b></b></div>")
+    expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
     console.log("DING!")
 
-    expect(element([".foo", element("hi")])).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
-    console.log("DING!")
   }
 )

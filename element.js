@@ -3,8 +3,11 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(
   ["extend"],
   function(extend) {
+    function Element() {}
+
     function element() {
-      var el = {}
+
+      var el = new Element()
 
       for(var i=0; i<arguments.length; i++) {
         var arg = arguments[i]
@@ -12,7 +15,7 @@ define(
         var isString = typeof arg == "string"
 
         if (isArray) {
-          el.contents = joinArray(arg)
+          el.children = argsToElements(arg)
         } else if (isString) {
           if (isASelector(arg)) {
             var selector = arg
@@ -29,17 +32,17 @@ define(
         parseSelector(selector)
       )
 
-      return toHtml(el)
+      return el
     }
 
-    function joinArray(array) {
+    function argsToElements(array) {
       return array.map(function(arg) {
-        if (arg.match(/</)) {
+        if (arg.html) {
           return arg
         } else {
           return element(arg)
         }
-      }).join("")
+      })
     }
 
     function isASelector(string) {
@@ -65,23 +68,31 @@ define(
       }
     }
 
-    function toHtml(el) {
-      html = "<" + el.tagName
+    Element.prototype.html = 
+      function(el) {
+        html = "<" + this.tagName
 
-      if (el.classString) {
-        html = html + " class=\"" + el.classString + "\""
+        if (this.classString) {
+          html = html + " class=\"" + this.classString + "\""
+        }
+
+        for (key in this.attributes || {}) {
+          html = html + " " + key + "=\"" + this.attributes[key] + "\""
+        }
+
+        html = html + ">"
+        if (this.children) {
+          html = html + this.children.map(
+              function(el) {
+                return el.html()
+              }
+            ).join("")
+        }
+        html = html + (this.contents || "")
+        html = html + "</" + this.tagName + ">"   
+
+        return html 
       }
-
-      for (key in el.attributes || {}) {
-        html = html + " " + key + "=\"" + el.attributes[key] + "\""
-      }
-
-      html = html + ">"
-      html = html + (el.contents || "")
-      html = html + "</" + el.tagName + ">"   
-
-      return html 
-    }
 
     return element
   }
