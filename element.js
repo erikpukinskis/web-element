@@ -1,4 +1,5 @@
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
+var requirejs = require("requirejs")
+var define = requirejs.define
 
 define(
   ["extend"],
