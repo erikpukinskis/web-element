@@ -11,8 +11,8 @@
     "url": "https://github.com/erikpukinskis/nrtv-element.git"
   },
   "dependencies": {
-    "extend": "*",
-    "requirejs": "*"
+    "amdefine": "*",
+    "extend": "*"
   },
   "devDependencies": {
     "chai": "*"
