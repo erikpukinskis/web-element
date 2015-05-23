@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "amdefine": "*",
-    "extend": "*"
+    "extend": "*",
+    "he": "*"
   },
   "devDependencies": {
     "chai": "*"

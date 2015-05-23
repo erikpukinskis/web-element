@@ -1,8 +1,8 @@
 if (typeof define !== 'function') { var define = require('amdefine')(module) }
 
 define(
-  ["extend"],
-  function(extend) {
+  ["extend", "he"],
+  function(extend, he) {
     function Element() {}
 
     function element() {
@@ -81,7 +81,7 @@ define(
         }
 
         for (key in this.attributes || {}) {
-          html = html + " " + key + "=\"" + this.attributes[key] + "\""
+          html = html + " " + key + "=\"" + he.encode(this.attributes[key]) + "\""
         }
 
         html = html + ">"

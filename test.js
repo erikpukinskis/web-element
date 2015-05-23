@@ -32,6 +32,8 @@ requirejs(
     expect(id).to.equal(el.id)
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
+    expect(element({onclick: "alert(\"foo\")"}).html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
+
     console.log("DING DING DING DING!")
   }
 )
