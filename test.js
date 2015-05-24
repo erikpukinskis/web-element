@@ -5,6 +5,18 @@ requirejs(
   function(element, chai) {
     var expect = chai.expect
 
+    var boxTemplate = element("box")
+    var turkeyEl = boxTemplate(".turkey", "lozenge")
+    expect(turkeyEl.html()).to.equal("<box class=\"turkey\">lozenge</box>")
+    console.log("DONG!")
+
+    var input = element("input.foo", element.style({
+      "border-bottom": "2px solid black"
+    })
+    var fragment = input.render()
+    expect(fragment.css).to.equal(".foo {border-bottom: 2ps solid black;}")
+    expect(fragment.html).to.equal("<input class=\"foo\"></input>")
+
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")
 

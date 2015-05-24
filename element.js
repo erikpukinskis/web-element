@@ -5,7 +5,17 @@ if (typeof define !== 'function') {
 define(
   ["extend", "he"],
   function(extend, he) {
-    function Element() {}
+    function Element() {
+      function template() {
+      }
+
+      // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
+
+      //   input = element("input")
+      //   input({placeholder: "emptiness"})
+
+      return template
+    }
 
     function element() {
 
@@ -30,7 +40,7 @@ define(
       }
 
       extend(
-        el, 
+        el,
         parseSelector(selector)
       )
 
@@ -70,8 +80,11 @@ define(
       }
     }
 
-    Element.prototype.html = 
-      function(el) {
+    Element.prototype.render =
+      function() {
+        var styles = []
+        var html = ""
+
         html = "<" + this.tagName
 
         if (this.id) {
@@ -87,6 +100,7 @@ define(
         }
 
         html = html + ">"
+
         if (this.children) {
           html = html + this.children.map(
               function(el) {
@@ -95,9 +109,10 @@ define(
             ).join("")
         }
         html = html + (this.contents || "")
-        html = html + "</" + this.tagName + ">"   
+        html = html + "</" + this.tagName + ">"
 
-        return html 
+        ...
+        return {html: html, styles: styles}
       }
 
     Element.next = 10000
@@ -107,6 +122,15 @@ define(
           Element.next++
         ).toString(36)
         return this.id
+      }
+
+    function ElementStyle(properties) {
+      this.properties = properties
+    }
+
+    element.style =
+      function(properties) {
+        return new ElementStyle(properties)
       }
 
     return element
