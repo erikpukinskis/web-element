@@ -26,6 +26,9 @@ requirejs(
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")
 
+    expect(element(".fancy.feast").html()).to.equal("<div class=\"fancy feast\"></div>")
+    console.log("DING!")
+
     expect(element("img").html()).to.equal("<img></img>")
     console.log("DING!")
 

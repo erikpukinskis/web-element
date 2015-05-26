@@ -109,7 +109,7 @@ define(
         }
 
         if (this.classes && this.classes.length) {
-          html = html + " class=\"" + this.classes.join("") + "\""
+          html = html + " class=\"" + this.classes.join(" ") + "\""
         }
 
         for (key in this.attributes || {}) {
@@ -125,7 +125,7 @@ define(
                   return el.html()
                 } else {
                   return el
-                }
+                }a
               }
             ).join("")
         }
