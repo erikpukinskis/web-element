@@ -11,6 +11,9 @@ requirejs(
     expect(foo.style()).to.equal(".foo {color: red;}")
     console.log("*** so wow!")
 
+    expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
+    console.log("stylie bus")
+
     expect(element(element()).html()).to.equal("<div><div></div></div>")
     console.log("*** suuuoooopa")
 

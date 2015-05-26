@@ -7,6 +7,7 @@ define(
   function(extend, he) {
     function Element() {
       this.stylesheet = {}
+      this.children = []
     }
 
     // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
@@ -28,7 +29,7 @@ define(
         if (isArray) {
           el.children = argsToElements(arg)
         } else if (isElement) {
-          el.children = [arg]
+          el.children.push(arg)
         } else if (isString) {
           if (isASelector(arg)) {
             selectors.push(arg)
@@ -120,7 +121,11 @@ define(
         if (this.children) {
           html = html + this.children.map(
               function(el) {
-                return el.html()
+                if (el.html) {
+                  return el.html()
+                } else {
+                  return el
+                }
               }
             ).join("")
         }
@@ -195,6 +200,15 @@ define(
 
       return template
     }
+
+    element.stylesheet = function() {
+      var el = element("style")
+      for(var i=0; i<arguments.length; i++) {
+        el.children.push(arguments[i].style())
+      }
+      return el
+    }
+
     return element
   }
 )
