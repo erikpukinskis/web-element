@@ -6,7 +6,7 @@ define(
   ["extend", "he"],
   function(extend, he) {
     function Element() {
-      this.styles = []
+      this.stylesheet = {}
     }
 
     // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
@@ -103,9 +103,11 @@ define(
     Element.prototype.html =
       function() {
 
+        var tag = this.tagName || "div"
+
         var html = ""
 
-        html = "<" + this.tagName
+        html = "<" + tag
 
         if (this.id) {
           html = html + " id=\"" + this.id + "\""
@@ -129,7 +131,7 @@ define(
             ).join("")
         }
         html = html + (this.contents || "")
-        html = html + "</" + this.tagName + ">"
+        html = html + "</" + tag + ">"
 
         return html
       }
@@ -149,12 +151,13 @@ define(
 
     element.style =
       function(properties) {
+        console.log("props", properties)
         return new ElementStyle(properties)
       }
 
     element.template = function() {
       var elementArgs = []
-      var styles = []
+      var cssProperties
       var generators = []
 
       for (var i=0; i<arguments.length; i++) {
@@ -163,61 +166,34 @@ define(
         var isFunction = typeof arg == "function"
 
         if (isStyle) {
-          styles.push(arg)
+          cssProperties = arg.properties
         } else if (isFunction) {
           generators.push(arg)
-        } {
+        } else {
           elementArgs.push(arg)
         }
       }
 
-      return function() {
+      console.log("elementArgs:", elementArgs)
+      console.log("props:", cssProperties)
+      console.log("generators:", generators)
+
+      var template = function() {
         var templateArgs = Array.prototype.slice.call(arguments)
-        console.log("called out template with", templateArgs)
 
         var el = element.apply(null,elementArgs)
 
         for (var i; i<generators.length; i++) {
-          var styles = generators[i](el)
-          el.styles = styles.concat(el.styles)
+          generators[i](el)
         }
+
+        el.stylesheet["."+el.classes[0]] = cssProperties
 
         return el
       }
+
+      return template
     }
     return element
   }
 )
-
-    function template() {
-      var elementArgs = []
-      var styles = []
-      var generators = []
-
-      for (var i=0; i<arguments.length; i++) {
-        var arg = arguments[i]
-        var isStyle = arg.constructor.name == "ElementStyle"
-        var isFunction = typeof arg == "function"
-
-        if (isStyle) {
-          styles.push(arg)
-        } else if (isFunction) {
-          generators.push(arg)
-        } {
-          elementArgs.push(arg)
-        }
-      }
-
-      return function() {
-        var templateArgs = Array.prototype.slice.call(arguments)
-
-        var el = element.apply(null,elementArgs)
-
-        for (var i; i<generators.length; i++) {
-          var styles = generators[i](el)
-          el.styles = styles.concat(el.styles)
-        }
-
-        return el
-      }
-    }

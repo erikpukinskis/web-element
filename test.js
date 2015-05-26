@@ -5,60 +5,32 @@ requirejs(
   function(element, chai) {
     var expect = chai.expect
 
-    var image = element.template("img")
-    var turkeyEl = image(".turkey", "lozenge")
-    expect(turkeyEl.html()).to.equal("<img class=\"turkey\">lozenge</img>")
-    console.log("DONG!")
+    var foo = element.template(".foo", element.style({"color": "red"}))
+    var el = foo()
 
-    var input = element.template(
-      "input.hipster",
-      element.style({
-        "border-bottom": "2px solid black"
-      })
-    )
+    console.log("down here we got an el like", JSON.stringify(el, null, 2))
 
-    var el = input()
+    expect(el.html()).to.equal("<div class=\"foo\"></div>")
 
-    expect(el.html()).to.equal("<input class=\"hipster\"></input>")
-    console.log("yum!")
-    expect(el.styles).to.equal({
-      ".hipster": {
-        "border-bottom": "2px solid black"
-      }
+    console.log("===\n"+JSON.stringify(el.stylesheet)+"\n===")
+    expect(el.stylesheet).to.deep.equal({
+      ".foo": {"color": "red"},
     })
+    console.log("so wow!")
 
-    console.log("doozie!")
 
+    var bar = element.template(foo, ".bar", element.style({"font-weight": "bold"}))
+    el = bar()
 
-    // Templates can be composed with other templates:
-
-    var big = element.template(
-      ".big",
-      element.style({
-        "font-size": "28pt"
-      })
-    )
-
-    var bignbold = element.template(
-      big,
-      ".bold",
-      element.style({
-        "font-weight": "bold"
-      })
-    )
-
-    expect(bignbold()).to.equal("<div class=\"big bold\"></div>")
-    console.log("DING!")
-    expect(bignbold().styles).to.deep.equal({
-      ".big": {
-        "font-size": "28pt"
-      },
-      ".bold": {
-        "font-weight": "bold"
-      }
+    expect(el.html()).to.equal("<div class=\"foo bar\"></div>")
+    console.log("SEGA")
+    expect(el.stylesheet).to.deep.equal({
+      ".foo": {"color": "red"},
+      ".bar": {"font-weight": "bold"}
     })
-
     console.log("dit didit doot!")
+
+
 
     // If you pass a generator, you get back a function that will make an el with your other arguments and pass it to the generator before returning it to the caller.
 
