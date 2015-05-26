@@ -23,16 +23,16 @@ define(
         var arg = arguments[i]
         var isArray = Array.isArray(arg)
         var isString = typeof arg == "string"
+        var isElement = arg.constructor.name == "Element"
 
         if (isArray) {
           el.children = argsToElements(arg)
+        } else if (isElement) {
+          el.children = [arg]
         } else if (isString) {
-          console.log("strrrrr")
           if (isASelector(arg)) {
-            console.log("sel!")
             selectors.push(arg)
           } else {
-            console.log("conto!")
             el.contents = arg
           }
         } else {
@@ -46,11 +46,6 @@ define(
           parseSelector(selectors[i])
         )
       }
-
-      console.log("Args are", Array.prototype.slice.call(arguments))
-
-      console.log("el has", JSON.stringify(el), "AND PARSE", selectors)
-
 
       return el
     }
@@ -70,7 +65,6 @@ define(
     }
 
     function parseSelector(selector) {
-      console.log("Looking at sel", selector)
       if (!selector) { selector = "" }
 
       var parts = selector.split(".")
@@ -113,7 +107,7 @@ define(
           html = html + " id=\"" + this.id + "\""
         }
 
-        if (this.classes) {
+        if (this.classes && this.classes.length) {
           html = html + " class=\"" + this.classes.join("") + "\""
         }
 
@@ -151,7 +145,6 @@ define(
 
     element.style =
       function(properties) {
-        console.log("props", properties)
         return new ElementStyle(properties)
       }
 
@@ -174,10 +167,6 @@ define(
         }
       }
 
-      console.log("elementArgs:", elementArgs)
-      console.log("props:", cssProperties)
-      console.log("generators:", generators)
-
       var template = function() {
         var templateArgs = Array.prototype.slice.call(arguments)
 
@@ -187,10 +176,22 @@ define(
           generators[i](el)
         }
 
-        el.stylesheet["."+el.classes[0]] = cssProperties
-
         return el
       }
+
+      template.style =
+        function() {
+          var css = this.styleSelector + " {"
+          for (name in this.cssProperties) {
+            css = css + name + ": " + this.cssProperties[name] + ";"
+          }
+          css = css + "}"
+          return css
+        }
+
+      var el = element.apply(null,elementArgs)
+      template.styleSelector = "."+el.classes[0]
+      template.cssProperties = cssProperties
 
       return template
     }

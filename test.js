@@ -7,48 +7,18 @@ requirejs(
 
     var foo = element.template(".foo", element.style({"color": "red"}))
     var el = foo()
-
-    console.log("down here we got an el like", JSON.stringify(el, null, 2))
-
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
+    expect(foo.style()).to.equal(".foo {color: red;}")
+    console.log("*** so wow!")
 
-    console.log("===\n"+JSON.stringify(el.stylesheet)+"\n===")
-    expect(el.stylesheet).to.deep.equal({
-      ".foo": {"color": "red"},
-    })
-    console.log("so wow!")
+    expect(element(element()).html()).to.equal("<div><div></div></div>")
+    console.log("*** suuuoooopa")
 
-
-    var bar = element.template(foo, ".bar", element.style({"font-weight": "bold"}))
-    el = bar()
-
-    expect(el.html()).to.equal("<div class=\"foo bar\"></div>")
-    console.log("SEGA")
-    expect(el.stylesheet).to.deep.equal({
-      ".foo": {"color": "red"},
-      ".bar": {"font-weight": "bold"}
-    })
-    console.log("dit didit doot!")
-
-
-
-    // If you pass a generator, you get back a function that will make an el with your other arguments and pass it to the generator before returning it to the caller.
-
-    var hello = element.template(
-      ".sup",
-      function(el, person) {
-        if (person == "Erik") {
-          el.contents = "Hiya " + person
-        } else {
-          el.contents = "Yo " + person + "!"
-        }
-      }
-    )
-
-    expect(hello("Erik")).to.equal("<div class=\"sup\">Hiya Erik</div>")
-
-    expect(hello("Danie")).to.equal("<div class=\"sup\">Yo Danie</div>")
-    console.log("so wow!")
+    var bar = element.template(".bar")
+    var foo = element.template(".foo", bar())
+    var el = foo([bar()])
+    expect(el.html()).to.equal("<div class=\"foo\"><div class=\"bar\"></div></div>")
+    console.log("*** dit didit doot!")
 
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")
