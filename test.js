@@ -10,17 +10,27 @@ requirejs(
     expect(turkeyEl.html()).to.equal("<img class=\"turkey\">lozenge</img>")
     console.log("DONG!")
 
-    var input = element("input.foo", element.style({
-      "border-bottom": "2px solid black"
+    var input = element.template(
+      "input.hipster",
+      element.style({
+        "border-bottom": "2px solid black"
       })
     )
-    var fragment = input.render()
-    expect(fragment.stylesheet).to.equal(".foo {border-bottom: 2ps solid black;}")
-    expect(fragment.html).to.equal("<input class=\"foo\"></input>")
+
+    var el = input()
+
+    expect(el.html()).to.equal("<input class=\"hipster\"></input>")
+    console.log("yum!")
+    expect(el.styles).to.equal({
+      ".hipster": {
+        "border-bottom": "2px solid black"
+      }
+    })
+
     console.log("doozie!")
 
 
-    // Templates can inherit from other templates:
+    // Templates can be composed with other templates:
 
     var big = element.template(
       ".big",
@@ -37,9 +47,17 @@ requirejs(
       })
     )
 
-    expect(bignbold.stylesheet()).to.equal(".big{font-size: 28pt}\n.bold{font-weight:bold}")
-    console.log("DING!")
     expect(bignbold()).to.equal("<div class=\"big bold\"></div>")
+    console.log("DING!")
+    expect(bignbold().styles).to.deep.equal({
+      ".big": {
+        "font-size": "28pt"
+      },
+      ".bold": {
+        "font-weight": "bold"
+      }
+    })
+
     console.log("dit didit doot!")
 
     // If you pass a generator, you get back a function that will make an el with your other arguments and pass it to the generator before returning it to the caller.

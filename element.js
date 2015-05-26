@@ -23,9 +23,7 @@ define(
         var arg = arguments[i]
         var isArray = Array.isArray(arg)
         var isString = typeof arg == "string"
-        var isStyle = arg.constructor.name == "ElementStyle"
 
-        console.log("arg is", arg, "of", isStyle)
         if (isArray) {
           el.children = argsToElements(arg)
         } else if (isString) {
@@ -37,8 +35,6 @@ define(
             console.log("conto!")
             el.contents = arg
           }
-        } else if (isStyle) {
-          el.styles.push(arg)
         } else {
           el.attributes = arg
         }
@@ -49,7 +45,7 @@ define(
           el,
           parseSelector(selectors[i])
         )
-      }      
+      }
 
       console.log("Args are", Array.prototype.slice.call(arguments))
 
@@ -104,7 +100,7 @@ define(
       return string
     }
 
-    Element.prototype.render =
+    Element.prototype.html =
       function() {
 
         var html = ""
@@ -135,12 +131,7 @@ define(
         html = html + (this.contents || "")
         html = html + "</" + this.tagName + ">"
 
-        return {html: html, stylesheet: stylesheet}
-      }
-
-    Element.prototype.html =
-      function() {
-        return this.render().html
+        return html
       }
 
     Element.next = 10000
@@ -162,20 +153,71 @@ define(
       }
 
     element.template = function() {
-      var elementArgs = Array.prototype.slice.call(arguments)
+      var elementArgs = []
+      var styles = []
+      var generators = []
+
+      for (var i=0; i<arguments.length; i++) {
+        var arg = arguments[i]
+        var isStyle = arg.constructor.name == "ElementStyle"
+        var isFunction = typeof arg == "function"
+
+        if (isStyle) {
+          styles.push(arg)
+        } else if (isFunction) {
+          generators.push(arg)
+        } {
+          elementArgs.push(arg)
+        }
+      }
+
+      return function() {
+        var templateArgs = Array.prototype.slice.call(arguments)
+        console.log("called out template with", templateArgs)
+
+        var el = element.apply(null,elementArgs)
+
+        for (var i; i<generators.length; i++) {
+          var styles = generators[i](el)
+          el.styles = styles.concat(el.styles)
+        }
+
+        return el
+      }
+    }
+    return element
+  }
+)
+
+    function template() {
+      var elementArgs = []
+      var styles = []
+      var generators = []
+
+      for (var i=0; i<arguments.length; i++) {
+        var arg = arguments[i]
+        var isStyle = arg.constructor.name == "ElementStyle"
+        var isFunction = typeof arg == "function"
+
+        if (isStyle) {
+          styles.push(arg)
+        } else if (isFunction) {
+          generators.push(arg)
+        } {
+          elementArgs.push(arg)
+        }
+      }
 
       return function() {
         var templateArgs = Array.prototype.slice.call(arguments)
 
-        var args = elementArgs.concat(templateArgs)
+        var el = element.apply(null,elementArgs)
 
-        console.log("Calling element with", JSON.stringify(args))
-        var el = element.apply(null,args)
-        console.log("el is ", el)
+        for (var i; i<generators.length; i++) {
+          var styles = generators[i](el)
+          el.styles = styles.concat(el.styles)
+        }
+
         return el
       }
     }
-
-    return element
-  }
-)
