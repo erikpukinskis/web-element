@@ -14,12 +14,51 @@ requirejs(
       "border-bottom": "2px solid black"
       })
     )
-
     var fragment = input.render()
-
-    expect(fragment.css).to.equal(".foo {border-bottom: 2ps solid black;}")
+    expect(fragment.stylesheet).to.equal(".foo {border-bottom: 2ps solid black;}")
     expect(fragment.html).to.equal("<input class=\"foo\"></input>")
     console.log("doozie!")
+
+
+    // Templates can inherit from other templates:
+
+    var big = element.template(
+      ".big",
+      element.style({
+        "font-size": "28pt"
+      })
+    )
+
+    var bignbold = element.template(
+      big,
+      ".bold",
+      element.style({
+        "font-weight": "bold"
+      })
+    )
+
+    expect(bignbold.stylesheet()).to.equal(".big{font-size: 28pt}\n.bold{font-weight:bold}")
+    console.log("DING!")
+    expect(bignbold()).to.equal("<div class=\"big bold\"></div>")
+    console.log("dit didit doot!")
+
+    // If you pass a generator, you get back a function that will make an el with your other arguments and pass it to the generator before returning it to the caller.
+
+    var hello = element.template(
+      ".sup",
+      function(el, person) {
+        if (person == "Erik") {
+          el.contents = "Hiya " + person
+        } else {
+          el.contents = "Yo " + person + "!"
+        }
+      }
+    )
+
+    expect(hello("Erik")).to.equal("<div class=\"sup\">Hiya Erik</div>")
+
+    expect(hello("Danie")).to.equal("<div class=\"sup\">Yo Danie</div>")
+    console.log("so wow!")
 
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")

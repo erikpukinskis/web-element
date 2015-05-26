@@ -5,7 +5,9 @@ if (typeof define !== 'function') {
 define(
   ["extend", "he"],
   function(extend, he) {
-    function Element() {}
+    function Element() {
+      this.styles = []
+    }
 
     // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
 
@@ -21,8 +23,9 @@ define(
         var arg = arguments[i]
         var isArray = Array.isArray(arg)
         var isString = typeof arg == "string"
+        var isStyle = arg.constructor.name == "ElementStyle"
 
-        console.log("arg is", arg)
+        console.log("arg is", arg, "of", isStyle)
         if (isArray) {
           el.children = argsToElements(arg)
         } else if (isString) {
@@ -34,8 +37,9 @@ define(
             console.log("conto!")
             el.contents = arg
           }
+        } else if (isStyle) {
+          el.styles.push(arg)
         } else {
-          console.log("ttr")
           el.attributes = arg
         }
       }
@@ -88,9 +92,21 @@ define(
       }
     }
 
+    function styleToString(style) {
+      var string = ""
+      for (key in style.properties) {
+        var value = style.properties[key]
+        if (string.length) {
+          string = string + ";"
+        }
+        string = string + key + ": " + value
+      }
+      return string
+    }
+
     Element.prototype.render =
       function() {
-        var styles = []
+
         var html = ""
 
         html = "<" + this.tagName
@@ -119,7 +135,7 @@ define(
         html = html + (this.contents || "")
         html = html + "</" + this.tagName + ">"
 
-        return {html: html, styles: styles}
+        return {html: html, stylesheet: stylesheet}
       }
 
     Element.prototype.html =
