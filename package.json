@@ -12,6 +12,7 @@
     "test": "node test.js"
   },
   "devDependencies": {
+    "requirejs": "*",
     "chai": "*"
   },
   "license": "ISC",

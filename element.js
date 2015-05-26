@@ -5,44 +5,52 @@ if (typeof define !== 'function') {
 define(
   ["extend", "he"],
   function(extend, he) {
-    function Element() {
-      function template() {
-      }
+    function Element() {}
 
-      // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
+    // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
 
-      //   input = element("input")
-      //   input({placeholder: "emptiness"})
-
-      return template
-    }
+    //   input = element("input")
+    //   input({placeholder: "emptiness"})
 
     function element() {
 
       var el = new Element()
+      var selectors = []
 
       for(var i=0; i<arguments.length; i++) {
         var arg = arguments[i]
         var isArray = Array.isArray(arg)
         var isString = typeof arg == "string"
 
+        console.log("arg is", arg)
         if (isArray) {
           el.children = argsToElements(arg)
         } else if (isString) {
+          console.log("strrrrr")
           if (isASelector(arg)) {
-            var selector = arg
+            console.log("sel!")
+            selectors.push(arg)
           } else {
+            console.log("conto!")
             el.contents = arg
           }
         } else {
+          console.log("ttr")
           el.attributes = arg
         }
       }
 
-      extend(
-        el,
-        parseSelector(selector)
-      )
+      for (var i=0; i<selectors.length; i++) {
+        extend(
+          el,
+          parseSelector(selectors[i])
+        )
+      }      
+
+      console.log("Args are", Array.prototype.slice.call(arguments))
+
+      console.log("el has", JSON.stringify(el), "AND PARSE", selectors)
+
 
       return el
     }
@@ -62,21 +70,21 @@ define(
     }
 
     function parseSelector(selector) {
+      console.log("Looking at sel", selector)
       if (!selector) { selector = "" }
 
-      var hasTagName = 
-        !!selector.match(/^[a-z]/)
-
-      if (!hasTagName) {
-        selector = "div" + selector
-      }
-
       var parts = selector.split(".")
-      var classNames = parts.slice(1)
+      var foundTagName = (parts[0].length > 0)
 
-      return {
-        tagName: parts[0],
-        classString: classNames.join(" ")
+      if (foundTagName) {
+        return {
+          tagName: parts[0],
+          classes: parts.slice(1)
+        }
+      } else {
+        return {
+          classes: parts.slice(1)
+        }
       }
     }
 
@@ -91,8 +99,8 @@ define(
           html = html + " id=\"" + this.id + "\""
         }
 
-        if (this.classString) {
-          html = html + " class=\"" + this.classString + "\""
+        if (this.classes) {
+          html = html + " class=\"" + this.classes.join("") + "\""
         }
 
         for (key in this.attributes || {}) {
@@ -111,8 +119,12 @@ define(
         html = html + (this.contents || "")
         html = html + "</" + this.tagName + ">"
 
-        ...
         return {html: html, styles: styles}
+      }
+
+    Element.prototype.html =
+      function() {
+        return this.render().html
       }
 
     Element.next = 10000
@@ -132,6 +144,21 @@ define(
       function(properties) {
         return new ElementStyle(properties)
       }
+
+    element.template = function() {
+      var elementArgs = Array.prototype.slice.call(arguments)
+
+      return function() {
+        var templateArgs = Array.prototype.slice.call(arguments)
+
+        var args = elementArgs.concat(templateArgs)
+
+        console.log("Calling element with", JSON.stringify(args))
+        var el = element.apply(null,args)
+        console.log("el is ", el)
+        return el
+      }
+    }
 
     return element
   }
