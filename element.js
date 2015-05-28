@@ -172,7 +172,9 @@ define(
         }
       }
 
-      var template = function() {
+      // A template is different than an element. They have different interfaces. A template takes non-htmly stuff like a burger, or a house. Element takes tag names, classes, children, DOM attributes, etc.
+
+      function template() {
         var templateArgs = Array.prototype.slice.call(arguments)
 
         var el = element.apply(null,elementArgs)

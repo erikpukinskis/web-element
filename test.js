@@ -5,6 +5,29 @@ requirejs(
   function(element, chai) {
     var expect = chai.expect
 
+    // The template function also makes it easy to pass along element args, by proxying whatever else you pass to it to the element:
+
+    var houseBurger = template(function(el, burger, house) {
+        var burger = element(
+          ".burger",
+          house.parts.join()
+        )
+
+        el.children.push(burger)
+      },
+      ".house-burger"
+    )
+
+    var house = {
+      parts: ["door", "window"]
+    }
+
+    var el = houseBurger(house)
+
+    expect(el.html()).to.equal("<div class=\"house-burger\">door,window</div>")
+
+    console.log("rabbit whiskers!")
+
     var foo = element.template(".foo", element.style({"color": "red"}))
     var el = foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
