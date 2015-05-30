@@ -12,20 +12,10 @@ requirejs(
 
     // The template function also makes it easy to pass along element args, by proxying whatever else you pass to the element:
 
-    var houseBurger = element.template(function(el, burger, house) {
-        var burger = element(
-          ".burger",
-          house.parts.join()
-        )
-
-        // element is a component?????????????????????????????????????
-
-        // a template is just a component with an element tie. And this is where we have to reconcile passing args to instances of components.
-
-
-        el.children.push(burger)
+    var houseBurger = element.template(function(house) {
+        this.children.push(house.parts.join())
       },
-      ".house-burger"
+      ".burger"
     )
 
     var house = {
@@ -34,9 +24,9 @@ requirejs(
 
     var el = houseBurger(house)
 
-    expect(el.html()).to.equal("<div class=\"house-burger\">door,window</div>")
+    expect(el.html()).to.equal("<div class=\"burger\">door,window</div>")
 
-    console.log("rabbit whiskers!")
+    console.log("ding ding ding!!")
 
 
 

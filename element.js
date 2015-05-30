@@ -178,8 +178,9 @@ define(
 
         var el = element.apply(null,elementArgs)
 
-        for (var i; i<generators.length; i++) {
-          generators[i](el)
+        for (var i=0; i<generators.length; i++) {
+          console.log("applying a generator!", arguments)
+          generators[i].apply(el, templateArgs)
         }
 
         return el
