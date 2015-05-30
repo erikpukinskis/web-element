@@ -207,7 +207,7 @@ define(
 
       template.style =
         function() {
-          var css = this.styleSelector + " {"
+          var css = this.styleIdentifier + " {"
           for (name in this.cssProperties) {
             css = css + name + ": " + this.cssProperties[name] + ";"
           }
@@ -217,21 +217,21 @@ define(
 
       template.generator = element.generator(elementArgs)
 
-      template.styleSelector = 
-        getFirstClass(elementArgs)
+      template.styleIdentifier = 
+        getStyleIdentifier(elementArgs)
 
       template.cssProperties = cssProperties
 
       return template
     }
 
-    function getFirstClass(args) {
+    function getStyleIdentifier(args) {
       for(var i=0; i<args.length; i++) {
         var arg = args[0]
         if (typeof arg == "string") {
           var parts = arg.match(/^\.([a-zA-Z-]+)/)
           if (parts) {
-            return parts[1]
+            return "."+parts[1]
           }
         }
       }

@@ -69,14 +69,14 @@ requirejs(
 
     // Template Styles
 
-    // var foo = element.template(".foo", element.style({"color": "red"}))
-    // var el = foo()
-    // expect(el.html()).to.equal("<div class=\"foo\"></div>")
-    // expect(foo.style()).to.equal(".foo {color: red;}")
-    // console.log("*** so wow!")
+    var foo = element.template(".foo", element.style({"color": "red"}))
+    var el = foo()
+    expect(el.html()).to.equal("<div class=\"foo\"></div>")
+    expect(foo.style()).to.equal(".foo {color: red;}")
+    console.log("*** so wow!")
 
-    // expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
-    // console.log("stylie bus")
+    expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
+    console.log("stylie bus")
 
 
 
