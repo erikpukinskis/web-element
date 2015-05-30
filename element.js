@@ -10,11 +10,6 @@ define(
       this.children = []
     }
 
-    // We want to be able to curry an element with a function that can act as a second constructor! I.e.:
-
-    //   input = element("input")
-    //   input({placeholder: "emptiness"})
-
     function element() {
 
       var el = new Element()
@@ -173,6 +168,10 @@ define(
       }
 
       // A template is different than an element. They have different interfaces. A template takes non-htmly stuff like a burger, or a house. Element takes tag names, classes, children, DOM attributes, etc.
+
+      // Although for convenience, since the template always has a toplevel element associated with it and you generally want to style that and add events and such to the template, template takes all of the elements arguments PLUS all the template args in one call.
+
+      // A template also lets you associate a style with an element. There's a 1:N relationship between styles and elements, but there's a 1:1 relationship between styles and templates, so it makes sense they go here.
 
       function template() {
         var templateArgs = Array.prototype.slice.call(arguments)

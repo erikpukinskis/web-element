@@ -5,13 +5,23 @@ requirejs(
   function(element, chai) {
     var expect = chai.expect
 
-    // The template function also makes it easy to pass along element args, by proxying whatever else you pass to it to the element:
 
-    var houseBurger = template(function(el, burger, house) {
+
+
+    // Template Generators
+
+    // The template function also makes it easy to pass along element args, by proxying whatever else you pass to the element:
+
+    var houseBurger = element.template(function(el, burger, house) {
         var burger = element(
           ".burger",
           house.parts.join()
         )
+
+        // element is a component?????????????????????????????????????
+
+        // a template is just a component with an element tie. And this is where we have to reconcile passing args to instances of components.
+
 
         el.children.push(burger)
       },
@@ -28,6 +38,38 @@ requirejs(
 
     console.log("rabbit whiskers!")
 
+
+
+
+    // Template Composition
+
+    var Foo = element.template("foo")
+    var Bar = element.template(Foo, ".bar")
+    var el = Bar()
+
+    expect(el.html()).to.equal("<foo class=\"bar\"></foo>")
+
+
+
+
+    // Container Generator
+
+    // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
+
+    var Body = element.tempate("body", element.containerGenerator)
+
+    var el = body(
+      element("img"),
+      element("a")
+    )
+
+    expect(el.html()).to.equal("<body><img></img><a></a></body>")
+
+
+
+
+    // Template Styles
+
     var foo = element.template(".foo", element.style({"color": "red"}))
     var el = foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
@@ -37,6 +79,11 @@ requirejs(
     expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
     console.log("stylie bus")
 
+
+
+
+    // Children
+
     expect(element(element()).html()).to.equal("<div><div></div></div>")
     console.log("*** suuuoooopa")
 
@@ -45,6 +92,17 @@ requirejs(
     var el = foo([bar()])
     expect(el.html()).to.equal("<div class=\"foo\"><div class=\"bar\"></div></div>")
     console.log("*** dit didit doot!")
+
+    expect(element("hi").html()).to.equal("<div>hi</div>")
+    console.log("DING!")
+
+    expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
+    console.log("DING!")
+
+
+
+
+    // Selectors
 
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
     console.log("DING!")
@@ -58,17 +116,32 @@ requirejs(
     expect(element(".fancy", "party").html()).to.equal("<div class=\"fancy\">party</div>")
     console.log("DING!")
 
+
+
+
+    // Attributes
+
     expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick=\"doSomething()\"></div>")
     console.log("DING!")
 
-    expect(element("hi").html()).to.equal("<div>hi</div>")
-    console.log("DING!")
+    var el = element({
+      onclick: "alert(\"foo\")"
+    })
+
+    expect(el.html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
+
+
+
+
+    // Raw HTML
 
     expect(element("<br>").html()).to.equal("<div><br></div>")
     console.log("DING!")
 
-    expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
-    console.log("DING!")
+
+
+
+    // Binding
 
     var el = element()
     var id = el.assignId()
@@ -76,7 +149,6 @@ requirejs(
     expect(id).to.equal(el.id)
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
-    expect(element({onclick: "alert(\"foo\")"}).html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
 
     console.log("DING DING DING DING!")
   }
