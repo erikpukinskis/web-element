@@ -22,8 +22,9 @@ define(
     element.generator =
       function(args) {
         return function() {
-          console.log("in base element generator with args", args)
-          console.log("el starts out as", this)
+          if (this.constructor.name != "Element") {
+            throw new Error("Tried run an element generator on "+this+" but it's not an element")
+          }
           var selectors = []
 
           for(var i=0; i<args.length; i++) {
@@ -52,12 +53,8 @@ define(
 
           for (var i=0; i<selectors.length; i++) {
 
-          console.log("classes:", this.classes)
-
             addSelector(this, selectors[i])
           }
-
-          console.log("el ends up like", this)
 
           return this
         }
@@ -91,8 +88,6 @@ define(
       for(var i=0; i<classes.length; i++) {
         parsed.classes.push(classes[i])
       }
-
-      console.log("parsed is", parsed)
     }
 
     function styleToString(style) {
@@ -177,7 +172,7 @@ define(
         var isTemplate = isFunction && arg.name == "template"
         var isGenerator = isFunction && !isTemplate
 
-        console.log("arg:", arg, isTemplate?"isTemplate":"", isStyle?"style":"", isFunction?"isFunction":"", isGenerator?"isFenerator":"", "constructor:"+arg.constructor.name)
+        // console.log("arg:", arg, isTemplate?"isTemplate":"", isStyle?"style":"", isFunction?"isFunction":"", isGenerator?"isFenerator":"", "constructor:"+arg.constructor.name)
 
         if (isTemplate) {
           generators.push(arg.generator)
@@ -186,7 +181,6 @@ define(
         } else if (isGenerator) {
           generators.push(arg)
         } else {
-          console.log(arg, "is an element arg")
           elementArgs.push(arg)
         }
       }
@@ -205,8 +199,6 @@ define(
         var el = element()  
 
         for (var i=generators.length-1; i> -1; i--) {
-          console.log("applying a generator!", arguments)
-          console.log("constructor is", el.constructor.name)
           generators[i].apply(el, templateArgs)
         }
 

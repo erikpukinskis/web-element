@@ -10,12 +10,12 @@ requirejs(
 
     // Generators
 
-    // var generator = element.generator(["a"])
-    // var el = element()
-    // generator(el)
-    // expect(el.html()).to.equal("<a></a>")
+    var generator = element.generator(["a"])
+    var el = element()
+    generator.apply(el)
+    expect(el.html()).to.equal("<a></a>")
 
-    // console.log("generated!")
+    console.log("generated!")
 
     // The template function also makes it easy to pass along element args, by proxying whatever else you pass to the element:
 
