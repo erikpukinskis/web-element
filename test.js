@@ -8,7 +8,14 @@ requirejs(
 
 
 
-    // Template Generators
+    // Generators
+
+    // var generator = element.generator(["a"])
+    // var el = element()
+    // generator(el)
+    // expect(el.html()).to.equal("<a></a>")
+
+    // console.log("generated!")
 
     // The template function also makes it easy to pass along element args, by proxying whatever else you pass to the element:
 
@@ -33,41 +40,41 @@ requirejs(
 
     // Template Composition
 
-    var Foo = element.template("foo")
-    var Bar = element.template(Foo, ".bar")
-    var el = Bar()
+    var Image = element.template("img")
+    var Polaroid = element.template(Image, ".polaroid")
+    var el = Polaroid()
 
-    expect(el.html()).to.equal("<foo class=\"bar\"></foo>")
+    expect(el.html()).to.equal("<img class=\"polaroid\"></img>")
 
-
+    console.log("eeeekComposition!!!")
 
 
     // Container Generator
 
     // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
 
-    var Body = element.tempate("body", element.containerGenerator)
+    // var Body = element.tempate("body", element.containerGenerator)
 
-    var el = body(
-      element("img"),
-      element("a")
-    )
+    // var el = body(
+    //   element("img"),
+    //   element("a")
+    // )
 
-    expect(el.html()).to.equal("<body><img></img><a></a></body>")
+    // expect(el.html()).to.equal("<body><img></img><a></a></body>")
 
 
 
 
     // Template Styles
 
-    var foo = element.template(".foo", element.style({"color": "red"}))
-    var el = foo()
-    expect(el.html()).to.equal("<div class=\"foo\"></div>")
-    expect(foo.style()).to.equal(".foo {color: red;}")
-    console.log("*** so wow!")
+    // var foo = element.template(".foo", element.style({"color": "red"}))
+    // var el = foo()
+    // expect(el.html()).to.equal("<div class=\"foo\"></div>")
+    // expect(foo.style()).to.equal(".foo {color: red;}")
+    // console.log("*** so wow!")
 
-    expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
-    console.log("stylie bus")
+    // expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
+    // console.log("stylie bus")
 
 
 

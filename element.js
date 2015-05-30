@@ -6,52 +6,69 @@ define(
   ["extend", "he"],
   function(extend, he) {
     function Element() {
-      this.stylesheet = {}
       this.children = []
+      this.classes = []
     }
 
     function element() {
 
       var el = new Element()
-      var selectors = []
 
-      for(var i=0; i<arguments.length; i++) {
-        var arg = arguments[i]
-        var isArray = Array.isArray(arg)
-        var isString = typeof arg == "string"
-        var isElement = arg.constructor.name == "Element"
-
-        if (isArray) {
-          el.children = argsToElements(arg)
-        } else if (isElement) {
-          el.children.push(arg)
-        } else if (isString) {
-          if (isASelector(arg)) {
-            selectors.push(arg)
-          } else {
-            el.contents = arg
-          }
-        } else {
-          el.attributes = arg
-        }
-      }
-
-      for (var i=0; i<selectors.length; i++) {
-        extend(
-          el,
-          parseSelector(selectors[i])
-        )
-      }
+      element.generator(arguments).apply(el)
 
       return el
     }
 
-    function argsToElements(array) {
-      return array.map(function(arg) {
+    element.generator =
+      function(args) {
+        return function() {
+          console.log("in base element generator with args", args)
+          console.log("el starts out as", this)
+          var selectors = []
+
+          for(var i=0; i<args.length; i++) {
+            var arg = args[i]
+            var isArray = Array.isArray(arg)
+            var isString = typeof arg == "string"
+            var isElement = arg.constructor.name == "Element"
+            var isObject = typeof arg == "object"
+
+            if (isArray) {
+              addElements(this.children, arg)
+            } else if (isElement) {
+              this.children.push(arg)
+            } else if (isString) {
+              if (isASelector(arg)) {
+                selectors.push(arg)
+              } else {
+                this.contents = arg
+              }
+            } else if (isObject) {
+              this.attributes = arg
+            } else {
+              throw new Error("Element doesn't know how to handle " + arg.toString())
+            }
+          }
+
+          for (var i=0; i<selectors.length; i++) {
+
+          console.log("classes:", this.classes)
+
+            addSelector(this, selectors[i])
+          }
+
+          console.log("el ends up like", this)
+
+          return this
+        }
+      }
+
+    function addElements(children, args) {
+      return args.map(function(arg) {
         if (arg.html) {
-          return arg
+          children.push(arg)
         } else {
-          return element(arg)
+          children.push(element(arg))
         }
       })
     }
@@ -60,22 +77,22 @@ define(
       return !!string.match(/^(img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/)
     }
 
-    function parseSelector(selector) {
+    function addSelector(parsed, selector) {
       if (!selector) { selector = "" }
 
       var parts = selector.split(".")
-      var foundTagName = (parts[0].length > 0)
+      var tagName = parts[0]
+      var classes = parts.slice(1)
 
-      if (foundTagName) {
-        return {
-          tagName: parts[0],
-          classes: parts.slice(1)
-        }
-      } else {
-        return {
-          classes: parts.slice(1)
-        }
+      if (tagName.length > 0) {
+        parsed.tagName = tagName
       }
+
+      for(var i=0; i<classes.length; i++) {
+        parsed.classes.push(classes[i])
+      }
+
+      console.log("parsed is", parsed)
     }
 
     function styleToString(style) {
@@ -157,15 +174,24 @@ define(
         var arg = arguments[i]
         var isStyle = arg.constructor.name == "ElementStyle"
         var isFunction = typeof arg == "function"
+        var isTemplate = isFunction && arg.name == "template"
+        var isGenerator = isFunction && !isTemplate
 
-        if (isStyle) {
+        console.log("arg:", arg, isTemplate?"isTemplate":"", isStyle?"style":"", isFunction?"isFunction":"", isGenerator?"isFenerator":"", "constructor:"+arg.constructor.name)
+
+        if (isTemplate) {
+          generators.push(arg.generator)
+        } else if (isStyle) {
           cssProperties = arg.properties
-        } else if (isFunction) {
+        } else if (isGenerator) {
           generators.push(arg)
         } else {
+          console.log(arg, "is an element arg")
           elementArgs.push(arg)
         }
       }
+
+      generators.push(element.generator(elementArgs))
 
       // A template is different than an element. They have different interfaces. A template takes non-htmly stuff like a burger, or a house. Element takes tag names, classes, children, DOM attributes, etc.
 
@@ -176,10 +202,11 @@ define(
       function template() {
         var templateArgs = Array.prototype.slice.call(arguments)
 
-        var el = element.apply(null,elementArgs)
+        var el = element()  
 
-        for (var i=0; i<generators.length; i++) {
+        for (var i=generators.length-1; i> -1; i--) {
           console.log("applying a generator!", arguments)
+          console.log("constructor is", el.constructor.name)
           generators[i].apply(el, templateArgs)
         }
 
@@ -196,11 +223,26 @@ define(
           return css
         }
 
-      var el = element.apply(null,elementArgs)
-      template.styleSelector = "."+el.classes[0]
+      template.generator = element.generator(elementArgs)
+
+      template.styleSelector = 
+        getFirstClass(elementArgs)
+
       template.cssProperties = cssProperties
 
       return template
+    }
+
+    function getFirstClass(args) {
+      for(var i=0; i<args.length; i++) {
+        var arg = args[0]
+        if (typeof arg == "string") {
+          var parts = arg.match(/^\.([a-zA-Z-]+)/)
+          if (parts) {
+            return parts[1]
+          }
+        }
+      }
     }
 
     element.stylesheet = function() {
