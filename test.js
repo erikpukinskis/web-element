@@ -53,14 +53,16 @@ requirejs(
 
     // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
 
-    // var Body = element.tempate("body", element.containerGenerator)
+    var Body = element.template("body", element.containerGenerator)
 
-    // var el = body(
-    //   element("img"),
-    //   element("a")
-    // )
+    var el = Body(
+      element("img"),
+      element("a")
+    )
 
-    // expect(el.html()).to.equal("<body><img></img><a></a></body>")
+    expect(el.html()).to.equal("<body><img></img><a></a></body>")
+
+    console.log("contayneez!")
 
 
 

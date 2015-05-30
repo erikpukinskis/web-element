@@ -245,6 +245,14 @@ define(
       return el
     }
 
+    element.containerGenerator = 
+      function() {
+        for (var i=0; i<arguments.length; i++) {
+          this.children.push(arguments[i])
+        }
+      }
+
+
     return element
   }
 )
