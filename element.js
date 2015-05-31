@@ -203,11 +203,22 @@ define(
 
       template.style =
         function() {
-          var css = this.styleIdentifier + " {"
+          var css = "\n" 
+            + this.styleIdentifier
+            + " {"
+
           for (name in this.cssProperties) {
-            css = css + name + ": " + this.cssProperties[name] + ";"
+
+            css = css 
+              + "\n  "
+              + name
+              + ": "
+              + this.cssProperties[
+                  name
+                ]
+              + ";"
           }
-          css = css + "}"
+          css = css + "\n}"
           return css
         }
 

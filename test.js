@@ -32,6 +32,7 @@ requirejs(
     var el = houseBurger(house)
 
     expect(el.html()).to.equal("<div class=\"burger\">door,window</div>")
+    console.log(el.html())
 
     console.log("ding ding ding!!")
 
@@ -72,10 +73,11 @@ requirejs(
     var foo = element.template(".foo", element.style({"color": "red"}))
     var el = foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
-    expect(foo.style()).to.equal(".foo {color: red;}")
+    expect(foo.style()).to.equal("\n.foo {\n  color: red;\n}")
+    console.log(foo.style())
     console.log("*** so wow!")
 
-    expect(element.stylesheet(foo).html()).to.equal("<style>.foo {color: red;}</style>")
+    expect(element.stylesheet(foo).html()).to.equal("<style>\n.foo {\n  color: red;\n}</style>")
     console.log("stylie bus")
 
 
