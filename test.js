@@ -81,7 +81,7 @@ requirejs(
 
 
 
-    // Children
+    // Contents
 
     expect(element(element()).html()).to.equal("<div><div></div></div>")
     console.log("*** suuuoooopa")
@@ -98,6 +98,11 @@ requirejs(
     expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
     console.log("DING!")
 
+    expect(element("<br>").html()).to.equal("<div><br></div>")
+    console.log("DING!")
+
+    expect(element(element.raw(".foo")).html()).to.equal("<div>.foo</div>")
+    console.log("DING!")
 
 
 
@@ -128,14 +133,6 @@ requirejs(
     })
 
     expect(el.html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
-
-
-
-
-    // Raw HTML
-
-    expect(element("<br>").html()).to.equal("<div><br></div>")
-    console.log("DING!")
 
 
 

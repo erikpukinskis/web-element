@@ -33,11 +33,14 @@ define(
             var isArray = Array.isArray(arg)
             var isString = typeof arg == "string"
             var isElement = arg.constructor.name == "Element"
+            var isRaw = typeof arg.raw == "string"
+            var isChild = isElement || isRaw
             var isObject = typeof arg == "object"
+            var isAttributes = isObject && !isRaw
 
             if (isArray) {
               addElements(this.children, arg)
-            } else if (isElement) {
+            } else if (isChild) {
               this.children.push(arg)
             } else if (isString) {
               if (isASelector(arg)) {
@@ -45,7 +48,7 @@ define(
               } else {
                 this.contents = arg
               }
-            } else if (isObject) {
+            } else if (isAttributes) {
               merge(this.attributes, arg)
             } else {
               throw new Error("Element doesn't know how to handle " + arg.toString())
@@ -130,15 +133,7 @@ define(
         html = html + ">"
 
         if (this.children) {
-          html = html + this.children.map(
-              function(el) {
-                if (el.html) {
-                  return el.html()
-                } else {
-                  return el
-                }a
-              }
-            ).join("")
+          html = html + this.children.map(childToHtml).join("")
         }
         html = html + (this.contents || "")
         html = html + "</" + tag + ">"
@@ -146,6 +141,15 @@ define(
         return html
       }
 
+    function childToHtml(child) {
+      if (child.html) {
+        return child.html()
+      } else if (child.raw) {
+        return child.raw
+      } else {
+        return child
+      }
+    }
     Element.next = 10000
     Element.prototype.assignId =
       function() {
@@ -256,6 +260,9 @@ define(
         }
       }
 
+    element.raw = function(html) {
+      return {raw: html}
+    }
 
     return element
   }
