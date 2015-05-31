@@ -75,7 +75,7 @@ define(
     }
 
 
-    var whitelist = /^(textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
+    var whitelist = /^(meta|textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
 
     function isASelector(string) {
       return !!string.match(whitelist)
@@ -95,18 +95,6 @@ define(
       for(var i=0; i<classes.length; i++) {
         parsed.classes.push(classes[i])
       }
-    }
-
-    function styleToString(style) {
-      var string = ""
-      for (key in style.properties) {
-        var value = style.properties[key]
-        if (string.length) {
-          string = string + ";"
-        }
-        string = string + key + ": " + value
-      }
-      return string
     }
 
     Element.prototype.html =
