@@ -71,8 +71,11 @@ define(
       })
     }
 
+
+    var whitelist = /^(textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
+
     function isASelector(string) {
-      return !!string.match(/^(img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/)
+      return !!string.match(whitelist)
     }
 
     function addSelector(parsed, selector) {
