@@ -32,7 +32,6 @@ requirejs(
     var el = houseBurger(house)
 
     expect(el.html()).to.equal("<div class=\"burger\">door,window</div>")
-    console.log(el.html())
 
     console.log("ding ding ding!!")
 
@@ -73,13 +72,24 @@ requirejs(
     var foo = element.template(".foo", element.style({"color": "red"}))
     var el = foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
-    expect(foo.style()).to.equal("\n.foo {\n  color: red;\n}")
-    console.log(foo.style())
+    expect(foo.styleSource()).to.contain(".foo {\n  color: red;\n}")
     console.log("*** so wow!")
 
-    expect(element.stylesheet(foo).html()).to.equal("<style>\n.foo {\n  color: red;\n}</style>")
+    expect(element.stylesheet(foo).html()).to.equal("<style>\n.foo {\n  color: red;\n\}\n</style>")
     console.log("stylie bus")
 
+    var responsive = element.template(
+      ".responsive",
+      element.style({
+        "@media (max-width: 600px)": {
+          "font-size": "0.8em"
+        }
+      })
+    )
+
+    expect(responsive.styleSource()).to.contain("@media (max-width: 600px) {\n.responsive {\n  font-size: 0.8em;\n}\n}")
+
+    console.log("queeeeries")
 
 
 

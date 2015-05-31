@@ -201,25 +201,31 @@ define(
         return el
       }
 
-      template.style =
+      template.styleSource =
         function() {
+
+          var mediaQueries = ""
+
           var css = "\n" 
             + this.styleIdentifier
             + " {"
 
           for (name in this.cssProperties) {
 
-            css = css 
-              + "\n  "
-              + name
-              + ": "
-              + this.cssProperties[
-                  name
-                ]
-              + ";"
+            if (name.match(/@media/)) {
+
+              mediaQueries += getMediaSource(
+                  name,
+                  this.styleIdentifier,
+                  cssProperties[name]
+                )
+
+            } else {
+              css += "\n  "+name+": "+cssProperties[name]+";"
+            }
           }
-          css = css + "\n}"
-          return css
+
+          return css + "\n}\n" +mediaQueries
         }
 
       template.generator = element.generator(elementArgs)
@@ -230,6 +236,16 @@ define(
       template.cssProperties = cssProperties
 
       return template
+    }
+
+    function getMediaSource(query, identifier, styles) {
+      var css = "\n" + query + " {\n" + identifier + " {"
+
+      for (var name in styles) {
+        css += "\n  "+name+": "+styles[name]+";"
+      }
+      css += "\n}\n}"
+      return css
     }
 
     function getStyleIdentifier(args) {
@@ -247,7 +263,7 @@ define(
     element.stylesheet = function() {
       var el = element("style")
       for(var i=0; i<arguments.length; i++) {
-        el.children.push(arguments[i].style())
+        el.children.push(arguments[i].styleSource())
       }
       return el
     }
