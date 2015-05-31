@@ -75,7 +75,7 @@ define(
     }
 
 
-    var whitelist = /^(meta|textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
+    var whitelist = /^(span|meta|textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
 
     function isASelector(string) {
       return !!string.match(whitelist)
@@ -251,11 +251,9 @@ define(
     function getStyleIdentifier(args) {
       for(var i=0; i<args.length; i++) {
         var arg = args[0]
-        if (typeof arg == "string") {
-          var parts = arg.match(/^\.([a-zA-Z-]+)/)
-          if (parts) {
-            return "."+parts[1]
-          }
+        if (isASelector(arg)) {
+          var parts = arg.split(".")
+          return "."+parts[1]
         }
       }
     }

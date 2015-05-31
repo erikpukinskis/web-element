@@ -69,14 +69,23 @@ requirejs(
 
     // Template Styles
 
-    var foo = element.template(".foo", element.style({"color": "red"}))
-    var el = foo()
+    var Foo = element.template(".foo", element.style({"color": "red"}))
+    var el = Foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
-    expect(foo.styleSource()).to.contain(".foo {\n  color: red;\n}")
+    expect(Foo.styleSource()).to.contain(".foo {\n  color: red;\n}")
     console.log("*** so wow!")
 
-    expect(element.stylesheet(foo).html()).to.equal("<style>\n.foo {\n  color: red;\n\}\n</style>")
+    expect(element.stylesheet(Foo).html()).to.equal("<style>\n.foo {\n  color: red;\n\}\n</style>")
     console.log("stylie bus")
+
+    var Tag = element.template(
+      "span.tag",
+      element.style({
+        "background": "springgreen"
+      })
+    )
+    expect(Tag.styleSource()).to.contain(".tag {\n  background: springgreen;\n}")
+    console.log("ding")
 
     var responsive = element.template(
       ".responsive",
