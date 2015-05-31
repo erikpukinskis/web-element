@@ -3,11 +3,12 @@ if (typeof define !== 'function') {
     module)}
 
 define(
-  ["extend", "he"],
-  function(extend, he) {
+  ["extend", "he", "merge"],
+  function(extend, he, merge) {
     function Element() {
       this.children = []
       this.classes = []
+      this.attributes = {}
     }
 
     function element() {
@@ -45,7 +46,7 @@ define(
                 this.contents = arg
               }
             } else if (isObject) {
-              this.attributes = arg
+              merge(this.attributes, arg)
             } else {
               throw new Error("Element doesn't know how to handle " + arg.toString())
             }
