@@ -125,6 +125,8 @@ requirejs(
     expect(element(element.raw(".foo")).html()).to.equal("<div>.foo</div>")
     console.log("DING!")
 
+    expect(element(element.raw("")).html()).to.equal("<div></div>")
+    console.log("dooneroo")
 
 
     // Selectors
@@ -167,6 +169,6 @@ requirejs(
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
 
-    console.log("DING DING DING DING!")
+    console.log("DING DING DING DING!\n")
   }
 )

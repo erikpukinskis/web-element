@@ -130,10 +130,14 @@ define(
       }
 
     function childToHtml(child) {
-      if (child.html) {
+      var raw = child.raw
+
+      // For some unknown reason if (raw = child.raw) doesn't work here.
+
+      if (typeof child.raw == "string") {
+        return raw
+      } else if (child.html) {
         return child.html()
-      } else if (child.raw) {
-        return child.raw
       } else {
         return child
       }
