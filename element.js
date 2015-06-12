@@ -185,6 +185,21 @@ define(
         }
       }
 
+      element.template.container = 
+        function() {
+          var args = Array.prototype.slice.call(arguments)
+
+          args.push(containerGenerator)
+
+          return element.template.apply(null, args)
+        }
+
+      function containerGenerator() {
+        for (var i=0; i<arguments.length; i++) {
+          this.children.push(arguments[i])
+        }
+      }
+        
       generators.push(element.generator(elementArgs))
 
       // A template is different than an element. They have different interfaces. A template takes non-htmly stuff like a burger, or a house. Element takes tag names, classes, children, DOM attributes, etc.
@@ -269,13 +284,6 @@ define(
       }
       return el
     }
-
-    element.containerGenerator = 
-      function() {
-        for (var i=0; i<arguments.length; i++) {
-          this.children.push(arguments[i])
-        }
-      }
 
     element.raw = function(html) {
       return {raw: html}

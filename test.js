@@ -53,7 +53,7 @@ requirejs(
 
     // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
 
-    var Body = element.template("body", element.containerGenerator)
+    var Body = element.template.container("body")
 
     var el = Body(
       element("img"),
@@ -64,8 +64,16 @@ requirejs(
 
     console.log("contayneez!")
 
+    // Which is equivalent to
 
-
+    element.template(
+      "body",
+      function(a, b /*etc*/) {
+        this.children.push(a)
+        this.children.push(b)
+        /*etc*/
+      }
+    )
 
     // Template Styles
 
