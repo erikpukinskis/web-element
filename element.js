@@ -75,7 +75,7 @@ define(
     }
 
 
-    var whitelist = /^(span|meta|textarea|img|a|div|input|button|p|h1|script|head|html|body|style)?(\.[^.]+)*$/
+    var whitelist = /^(span|meta|textarea|img|a|div|input|li|ul|button|p|h1|h2|h3|script|head|html|body|style)?(\.[^.]+)*$/
 
     function isASelector(string) {
       return !!string.match(whitelist)
