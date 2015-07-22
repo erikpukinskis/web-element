@@ -5,7 +5,6 @@
   "main": "element.js",
   "dependencies": {
     "nrtv-library": "*",
-    "extend": "*",
     "he": "*",
     "merge": "*"
   },
