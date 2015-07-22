@@ -115,7 +115,14 @@ define(
         }
 
         for (key in this.attributes || {}) {
-          html = html + " " + key + "=\"" + he.encode(this.attributes[key]) + "\""
+
+          var value = this.attributes[key]
+
+          if (typeof value.replace != "function") {
+            throw new Error("You said you wanted the "+key+" attribute to be "+JSON.stringify(value)+" on your element, but attribute values need to be strings.")
+          }
+
+          html = html + " " + key + "=\"" + he.encode(value) + "\""
         }
 
         html = html + ">"
