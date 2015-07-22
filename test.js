@@ -1,21 +1,14 @@
-requirejs = require("requirejs")
+var library = require("nrtv-library")(require)
 
-requirejs(
-  ["element", "chai"],
-  function(element, chai) {
-    var expect = chai.expect
-
-
-
-
-    // Generators
+library.test(
+  "generators",
+  ["./element"],
+  function(expect, done, element) {
 
     var generator = element.generator(["a"])
     var el = element()
     generator.apply(el)
     expect(el.html()).to.equal("<a></a>")
-
-    console.log("generated!")
 
     // The template function also makes it easy to pass along element args, by proxying whatever else you pass to the element:
 
@@ -33,12 +26,15 @@ requirejs(
 
     expect(el.html()).to.equal("<div class=\"burger\">door,window</div>")
 
-    console.log("ding ding ding!!")
+    done()
+  }
+)
 
 
-
-
-    // Template Composition
+library.test(
+  "template composition",
+  ["./element"],
+  function(expect, done, element) {
 
     var Image = element.template("img")
     var Polaroid = element.template(Image, ".polaroid")
@@ -46,10 +42,17 @@ requirejs(
 
     expect(el.html()).to.equal("<img class=\"polaroid\"></img>")
 
-    console.log("eeeekComposition!!!")
+    done()
+  }
+)
 
 
-    // Container Generator
+
+
+library.test(
+  "generating container templates",
+  ["./element"],
+  function(expect, done, element) {
 
     // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
 
@@ -62,8 +65,6 @@ requirejs(
 
     expect(el.html()).to.equal("<body><img></img><a></a></body>")
 
-    console.log("contayneez!")
-
     // Which is equivalent to
 
     element.template(
@@ -75,16 +76,23 @@ requirejs(
       }
     )
 
-    // Template Styles
+    done()
+  }
+)
+
+
+
+library.test(
+  "template styles",
+  ["./element"],
+  function(expect, done, element) {
 
     var Foo = element.template(".foo", element.style({"color": "red"}))
     var el = Foo()
     expect(el.html()).to.equal("<div class=\"foo\"></div>")
     expect(Foo.styleSource()).to.contain(".foo {\n  color: red;\n}")
-    console.log("*** so wow!")
 
     expect(element.stylesheet(Foo).html()).to.equal("<style>\n.foo {\n  color: red;\n\}\n</style>")
-    console.log("stylie bus")
 
     var Tag = element.template(
       "span.tag",
@@ -93,7 +101,6 @@ requirejs(
       })
     )
     expect(Tag.styleSource()).to.contain(".tag {\n  background: springgreen;\n}")
-    console.log("ding")
 
     var responsive = element.template(
       ".responsive",
@@ -106,58 +113,65 @@ requirejs(
 
     expect(responsive.styleSource()).to.contain("@media (max-width: 600px) {\n.responsive {\n  font-size: 0.8em;\n}\n}")
 
-    console.log("queeeeries")
+    done()
+  }
+)
 
 
 
-    // Contents
+library.test(
+  "contents",
+  ["./element"],
+  function(expect, done, element) {
 
     expect(element(element()).html()).to.equal("<div><div></div></div>")
-    console.log("*** suuuoooopa")
 
     var bar = element.template(".bar")
     var foo = element.template(".foo", bar())
     var el = foo([bar()])
     expect(el.html()).to.equal("<div class=\"foo\"><div class=\"bar\"></div></div>")
-    console.log("*** dit didit doot!")
 
     expect(element("hi").html()).to.equal("<div>hi</div>")
-    console.log("DING!")
 
     expect(element([".foo", element("hi")]).html()).to.equal("<div><div class=\"foo\"></div><div>hi</div></div>")
-    console.log("DING!")
 
     expect(element("<br>").html()).to.equal("<div><br></div>")
-    console.log("DING!")
 
     expect(element(element.raw(".foo")).html()).to.equal("<div>.foo</div>")
-    console.log("DING!")
 
     expect(element(element.raw("")).html()).to.equal("<div></div>")
-    console.log("dooneroo")
+
+    done()
+  }
+)
 
 
-    // Selectors
+
+library.test(
+  "selectors",
+  ["./element"],
+  function(expect, done, element) {
 
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
-    console.log("DING!")
 
     expect(element(".fancy.feast").html()).to.equal("<div class=\"fancy feast\"></div>")
-    console.log("DING!")
 
     expect(element("img").html()).to.equal("<img></img>")
-    console.log("DING!")
 
     expect(element(".fancy", "party").html()).to.equal("<div class=\"fancy\">party</div>")
-    console.log("DING!")
+
+    done()
+  }
+)
 
 
 
-
-    // Attributes
+library.test(
+  "attributes",
+  ["./element"],
+  function(expect, done, element) {
 
     expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick=\"doSomething()\"></div>")
-    console.log("DING!")
 
     var el = element({
       onclick: "alert(\"foo\")"
@@ -165,10 +179,16 @@ requirejs(
 
     expect(el.html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
 
+    done()
+  }
+)
 
 
 
-    // Binding
+library.test(
+  "binding",
+  ["./element"],
+  function(expect, done, element) {
 
     var el = element()
     var id = el.assignId()
@@ -176,7 +196,6 @@ requirejs(
     expect(id).to.equal(el.id)
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
-
-    console.log("DING DING DING DING!\n")
+    done()
   }
 )

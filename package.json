@@ -4,17 +4,13 @@
   "description": "Generate HTML",
   "main": "element.js",
   "dependencies": {
-    "amdefine": "*",
+    "nrtv-library": "*",
     "extend": "*",
     "he": "*",
     "merge": "*"
   },
   "scripts": {
     "test": "node test.js"
-  },
-  "devDependencies": {
-    "requirejs": "*",
-    "chai": "*"
   },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-element",

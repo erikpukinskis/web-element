@@ -1,8 +1,7 @@
-if (typeof define !== 'function') {
-  var define = require('amdefine')(
-    module)}
+var library = require("nrtv-library")(require)
 
-define(
+module.exports = library.export(
+  "nrtv-element",
   ["extend", "he", "merge"],
   function(extend, he, merge) {
     function Element() {
