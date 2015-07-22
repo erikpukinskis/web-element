@@ -1,6 +1,6 @@
 {
   "name": "nrtv-element",
-  "version": "0.26.0",
+  "version": "0.27.0",
   "description": "Generate HTML",
   "main": "element.js",
   "dependencies": {
