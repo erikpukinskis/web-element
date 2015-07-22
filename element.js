@@ -11,6 +11,8 @@ define(
       this.attributes = {}
     }
 
+    Element.prototype.__isNrtvElement = true
+
     function element() {
 
       var el = new Element()
@@ -32,7 +34,7 @@ define(
             var arg = args[i]
             var isArray = Array.isArray(arg)
             var isString = typeof arg == "string"
-            var isElement = arg.constructor.name == "Element"
+            var isElement = arg.__isNrtvElement == true
             var isRaw = typeof arg.raw == "string"
             var isChild = isElement || isRaw
             var isObject = typeof arg == "object"
