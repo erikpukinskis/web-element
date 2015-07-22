@@ -9,9 +9,8 @@ define(
       this.children = []
       this.classes = []
       this.attributes = {}
+      this.__isNrtvElement = true
     }
-
-    Element.prototype.__isNrtvElement = true
 
     function element() {
 
