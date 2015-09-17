@@ -177,7 +177,7 @@ library.test(
       onclick: "alert(\"foo\")"
     })
 
-    expect(el.html()).to.equal('<div onclick="alert(&#x22;foo&#x22;)"></div>')
+    expect(el.html()).to.equal('<div onclick="alert(&quot;foo&quot;)"></div>')
 
     done()
   }

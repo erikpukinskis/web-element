@@ -122,7 +122,7 @@ module.exports = library.export(
             throw new Error("You said you wanted the "+key+" attribute to be "+JSON.stringify(value)+" on your element, but attribute values need to be strings.")
           }
 
-          html = html + " " + key + "=\"" + he.encode(value) + "\""
+          html = html + " " + key + "=\"" + he.escape(value) + "\""
         }
 
         html = html + ">"
