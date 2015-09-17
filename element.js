@@ -33,7 +33,7 @@ module.exports = library.export(
             var isArray = Array.isArray(arg)
             var isString = typeof arg == "string"
             var isElement = arg.__isNrtvElement == true
-            var isRaw = typeof arg.raw == "string"
+            var isRaw = typeof arg.__raw == "string"
             var isChild = isElement || isRaw
             var isObject = typeof arg == "object"
             var isAttributes = isObject && !isRaw
@@ -137,18 +137,18 @@ module.exports = library.export(
       }
 
     function childToHtml(child) {
-      var raw = child.raw
 
       // For some unknown reason if (raw = child.raw) doesn't work here.
 
-      if (typeof child.raw == "string") {
-        return raw
+      if (typeof child.__raw == "string") {
+        return child.__raw
       } else if (child.html) {
         return child.html()
       } else {
         return child
       }
     }
+
     Element.next = 10000
     Element.prototype.assignId =
       function() {
@@ -178,8 +178,6 @@ module.exports = library.export(
         var isFunction = typeof arg == "function"
         var isTemplate = isFunction && arg.name == "template"
         var isGenerator = isFunction && !isTemplate
-
-        // console.log("arg:", arg, isTemplate?"isTemplate":"", isStyle?"style":"", isFunction?"isFunction":"", isGenerator?"isFenerator":"", "constructor:"+arg.constructor.name)
 
         if (isTemplate) {
           generators.push(arg.generator)
@@ -293,7 +291,10 @@ module.exports = library.export(
     }
 
     element.raw = function(html) {
-      return {raw: html}
+      if (typeof html != "string") {
+        throw new Error("You tried to use "+JSON.stringify(html)+" as raw HTML, but it isn't a string. HTML is strings bro.")
+      }
+      return {__raw: html}
     }
 
     return element
