@@ -119,7 +119,11 @@ module.exports = library.export(
           var value = this.attributes[key]
 
           if (typeof value.replace != "function") {
-            throw new Error("You said you wanted the "+key+" attribute to be "+JSON.stringify(value)+" on your element, but attribute values need to be strings.")
+            if (value.binding) {
+              throw new Error("You passed a binding as your onclick attribute. Did you mean to do yourFunction.evalable()?")
+            } else {
+              throw new Error("You said you wanted the "+key+" attribute to be "+JSON.stringify(value)+" on your element, but attribute values need to be strings.")
+            }
           }
 
           html = html + " " + key + "=\"" + he.escape(value) + "\""
