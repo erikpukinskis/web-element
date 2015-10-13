@@ -119,8 +119,8 @@ module.exports = library.export(
           var value = this.attributes[key]
 
           if (typeof value.replace != "function") {
-            if (value.binding) {
-              throw new Error("You passed a binding as your onclick attribute. Did you mean to do yourFunction.evalable()?")
+            if (value.evalable) {
+              throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
             } else {
               throw new Error("You said you wanted the "+key+" attribute to be "+JSON.stringify(value)+" on your element, but attribute values need to be strings.")
             }
