@@ -75,7 +75,7 @@ module.exports = library.export(
     }
 
 
-    var whitelist = /^(iframe|span|meta|textarea|img|a|div|input|li|ul|button|p|h1|h2|h3|script|head|html|body|style)?(\.[^.]+)*$/
+    var whitelist = /^(a|body|button|canvas|div|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul)?(\.[^.]+)*$/
 
     function isASelector(string) {
       return !!string.match(whitelist)
