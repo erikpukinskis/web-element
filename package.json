@@ -11,6 +11,9 @@
   "scripts": {
     "test": "node test.js"
   },
+  "devDependencies": {
+    "nrtv-test": "*"
+  },
   "license": "ISC",
   "homepage": "https://github.com/erikpukinskis/nrtv-element",
   "repository": {

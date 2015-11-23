@@ -1,6 +1,7 @@
-var library = require("nrtv-library")(require)
+var test = require("nrtv-test")(require)
 
-library.test(
+
+test.using(
   "generators",
   ["./element"],
   function(expect, done, element) {
@@ -31,7 +32,7 @@ library.test(
 )
 
 
-library.test(
+test.using(
   "template composition",
   ["./element"],
   function(expect, done, element) {
@@ -49,7 +50,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "generating container templates",
   ["./element"],
   function(expect, done, element) {
@@ -82,7 +83,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "template styles",
   ["./element"],
   function(expect, done, element) {
@@ -119,7 +120,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "contents",
   ["./element"],
   function(expect, done, element) {
@@ -147,7 +148,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "selectors",
   ["./element"],
   function(expect, done, element) {
@@ -166,7 +167,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "attributes",
   ["./element"],
   function(expect, done, element) {
@@ -185,7 +186,7 @@ library.test(
 
 
 
-library.test(
+test.using(
   "binding",
   ["./element"],
   function(expect, done, element) {
@@ -196,6 +197,28 @@ library.test(
     expect(id).to.equal(el.id)
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
+    done()
+  }
+)
+
+
+
+test.using(
+  "bodies",
+
+  ["./"],
+  function(expect, done, element) {
+
+    var body = element.template(
+      "body",
+      element.style({
+        margin: "0"
+      })
+    )
+
+    var html = element.stylesheet(body).html()
+
+    expect(html).to.match(/body {/)
     done()
   }
 )

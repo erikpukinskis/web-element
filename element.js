@@ -281,7 +281,11 @@ module.exports = library.export(
         var arg = args[0]
         if (isASelector(arg)) {
           var parts = arg.split(".")
-          return "."+parts[1]
+          if (parts[1]) {
+            return "."+parts[1]
+          } else {
+            return  parts[0]
+          }
         }
       }
     }
