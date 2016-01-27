@@ -222,3 +222,24 @@ test.using(
     done()
   }
 )
+
+
+test.using(
+  "standalone styles",
+  ["./"],
+  function(expect, done, element) {
+    var body = element.style(
+      "body, input", {
+        "font-family": "Helvetica",
+      }
+    )
+
+    expect(body.styleSource()).to.equal(
+      "\nbody, input {\n" +
+      "  font-family: Helvetica;\n" +
+      "}\n"
+    )
+
+    done()
+  }
+)

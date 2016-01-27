@@ -162,13 +162,24 @@ module.exports = library.export(
         return this.id
       }
 
-    function ElementStyle(properties) {
-      this.properties = properties
+    function ElementStyle(args) {
+      for(var i=0; i<args.length; i++) {
+        var arg = args[i]
+        if (typeof arg == "object") {
+          this.properties = arg
+        } else if (typeof arg == "string") {
+          this.identifier = arg
+        }
+      }
+    }
+
+    ElementStyle.prototype.styleSource = function() {
+      return styleSource(this.identifier, this.properties)
     }
 
     element.style =
-      function(properties) {
-        return new ElementStyle(properties)
+      function() {
+        return new ElementStyle(arguments)
       }
 
     element.template = function() {
@@ -216,29 +227,8 @@ module.exports = library.export(
 
       template.styleSource =
         function() {
-
-          var mediaQueries = ""
-
-          var css = "\n" 
-            + this.styleIdentifier
-            + " {"
-
-          for (name in this.cssProperties) {
-
-            if (name.match(/@media/)) {
-
-              mediaQueries += getMediaSource(
-                  name,
-                  this.styleIdentifier,
-                  cssProperties[name]
-                )
-
-            } else {
-              css += "\n  "+name+": "+cssProperties[name]+";"
-            }
-          }
-
-          return css + "\n}\n" +mediaQueries
+          return styleSource(this.styleIdentifier, this.cssProperties
+          )
         }
 
       template.generator = element.generator(elementArgs)
@@ -264,6 +254,31 @@ module.exports = library.export(
       for (var i=0; i<arguments.length; i++) {
         this.children.push(arguments[i])
       }
+    }
+
+    function styleSource(identifer, properties) {
+        var mediaQueries = ""
+
+        var css = "\n" 
+          + identifer
+          + " {"
+
+        for (name in properties) {
+
+          if (name.match(/@media/)) {
+
+            mediaQueries += getMediaSource(
+                name,
+                identifer,
+                properties[name]
+              )
+
+          } else {
+            css += "\n  "+name+": "+properties[name]+";"
+          }
+        }
+
+        return css + "\n}\n" +mediaQueries
     }
 
     function getMediaSource(query, identifier, styles) {
