@@ -2,8 +2,8 @@ var library = require("nrtv-library")(require)
 
 module.exports = library.export(
   "nrtv-element",
-  ["he", "merge"],
-  function(he, merge) {
+  ["nrtv-he"],
+  function(he) {
     function Element() {
       this.children = []
       this.classes = []
@@ -63,6 +63,12 @@ module.exports = library.export(
           return this
         }
       }
+
+    function merge(a, b) {
+      for(key in b) {
+        a[key] = b[key]
+      }
+    }
 
     function addElements(children, args) {
       return args.map(function(arg) {

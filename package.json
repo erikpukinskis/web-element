@@ -5,8 +5,7 @@
   "main": "element.js",
   "dependencies": {
     "nrtv-library": "*",
-    "he": "*",
-    "merge": "*"
+    "nrtv-he": "*"
   },
   "scripts": {
     "test": "node test.js"
