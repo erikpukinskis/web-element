@@ -82,6 +82,19 @@ test.using(
 )
 
 
+test.using(
+  "inline styles",
+  ["./element"],
+  function(expect, done, element) {
+    var red = element(
+      element.style({color: "red"})
+    )
+
+    expect(red.html()).to.equal("<div style=\"color: red;\"></div>")
+
+    done()
+  }
+)
 
 test.using(
   "template styles",

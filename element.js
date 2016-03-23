@@ -32,11 +32,12 @@ module.exports = library.export(
             var arg = args[i]
             var isArray = Array.isArray(arg)
             var isString = typeof arg == "string"
-            var isElement = arg.__isNrtvElement == true
+            var isElement = arg && arg.__isNrtvElement == true
             var isRaw = typeof arg.__raw == "string"
+            var isStyle = arg.__isNrtvElementStyle
             var isChild = isElement || isRaw
             var isObject = typeof arg == "object"
-            var isAttributes = isObject && !isRaw
+            var isAttributes = isObject && !isRaw && !isStyle
 
             if (isArray) {
               addElements(this.children, arg)
@@ -50,6 +51,8 @@ module.exports = library.export(
               }
             } else if (isAttributes) {
               merge(this.attributes, arg)
+            } else if (isStyle) {
+              appendStyles(arg.properties, this)
             } else {
               throw new Error("Element doesn't know how to handle " + arg.toString())
             }
@@ -80,6 +83,15 @@ module.exports = library.export(
       })
     }
 
+    function appendStyles(properties, el) {
+      var style = el.attributes.style || ""
+
+      for(var key in properties) {
+        style += stylePropertySource(key, properties[key])
+      }
+
+      el.attributes.style = style
+    }
 
     var whitelist = /^(a|body|button|canvas|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul)?(\.[^.]+)*$/
 
@@ -169,6 +181,7 @@ module.exports = library.export(
       }
 
     function ElementStyle(args) {
+      this.__isNrtvElementStyle = true
       for(var i=0; i<args.length; i++) {
         var arg = args[i]
         if (typeof arg == "object") {
@@ -195,7 +208,7 @@ module.exports = library.export(
 
       for (var i=0; i<arguments.length; i++) {
         var arg = arguments[i]
-        var isStyle = arg.constructor.name == "ElementStyle"
+        var isStyle = arg.__isNrtvElementStyle
         var isFunction = typeof arg == "function"
         var isTemplate = isFunction && arg.name == "template"
         var isGenerator = isFunction && !isTemplate
@@ -269,22 +282,26 @@ module.exports = library.export(
           + identifer
           + " {"
 
-        for (name in properties) {
+        for (key in properties) {
 
-          if (name.match(/@media/)) {
+          if (key.match(/@media/)) {
 
             mediaQueries += getMediaSource(
-                name,
+                key,
                 identifer,
-                properties[name]
+                properties[key]
               )
 
           } else {
-            css += "\n  "+name+": "+properties[name]+";"
+            css += "\n  "+stylePropertySource(key, properties[key])
           }
         }
 
         return css + "\n}\n" +mediaQueries
+    }
+
+    function stylePropertySource(key, value) {
+      return key+": "+value+";"
     }
 
     function getMediaSource(query, identifier, styles) {
