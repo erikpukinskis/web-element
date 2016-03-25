@@ -33,7 +33,7 @@ module.exports = library.export(
   
             if (typeof arg == "undefined") {
               args = Array.prototype.slice.call(args)
-              throw new Error("Argument "+i+" of "+JSON.stringify(args)+" is undefined")
+              throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th argument is undefined")
             }
   
             var isArray = Array.isArray(arg)
