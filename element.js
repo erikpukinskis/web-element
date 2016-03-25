@@ -30,9 +30,12 @@ module.exports = library.export(
 
           for(var i=0; i<args.length; i++) {
             var arg = args[i]
+  
             if (typeof arg == "undefined") {
+              args = Array.prototype.slice.call(args)
               throw new Error("Argument "+i+" of "+JSON.stringify(args)+" is undefined")
             }
+  
             var isArray = Array.isArray(arg)
             var isString = typeof arg == "string"
             var isElement = arg && arg.__isNrtvElement == true
