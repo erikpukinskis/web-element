@@ -11,6 +11,14 @@ module.exports = library.export(
       this.__isNrtvElement = true
     }
 
+    Element.prototype.onclick = 
+      function(call) {
+        if (call.evalable) {
+          call = call.evalable()
+        }
+        this.attributes.onclick = call
+      }
+
     function element() {
 
       var el = new Element()

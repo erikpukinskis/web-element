@@ -256,3 +256,22 @@ test.using(
     done()
   }
 )
+
+
+test.using(
+  "onclick",
+  ["./element", "nrtv-function-call"],
+  function(expect, done, element, functionCall) {
+
+    function dirt() {}
+
+    var el = element()
+    el.onclick(functionCall(dirt))
+
+    expect(el.html()).to.equal("<div onclick=\"dirt()\"></div>")
+
+    done()
+  }
+)
+
+
