@@ -196,10 +196,11 @@ module.exports = library.export(
     Element.next = 10000
     Element.prototype.assignId =
       function() {
-        this.id = "el-"+(
-          Element.next++
-        ).toString(36)
-        return this.id
+        return this.id || (
+          this.id = "el-"+(
+            Element.next++
+          ).toString(36)
+        )
       }
 
     function ElementStyle(args) {
