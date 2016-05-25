@@ -107,13 +107,10 @@ module.exports = library.export(
       el.attributes.style = style
     }
 
-    var whitelist = /^(a|body|button|canvas|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul)?(\[|\.)/
+    var whitelist = /^(\.|(a|body|button|canvas|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul)(\[|\.|$))/
 
     function isASelector(string) {
       var itIs = !!string.match(whitelist)
-      if (!itIs) {
-        debugger
-      }
       return itIs
     }
 
