@@ -4,8 +4,7 @@
   "description": "Generate HTML",
   "main": "element.js",
   "dependencies": {
-    "nrtv-library": "*",
-    "nrtv-he": "*"
+    "nrtv-library": "*"
   },
   "scripts": {
     "test": "node test.js"
