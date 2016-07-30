@@ -90,7 +90,7 @@ test.using(
       element.style({color: "red"})
     )
 
-    expect(red.html()).to.equal("<div style=\"color: red;\"></div>")
+    expect(red.html()).to.equal("<div style='color: red;'></div>")
 
     done()
   }
@@ -185,13 +185,13 @@ test.using(
   ["./element"],
   function(expect, done, element) {
 
-    expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick=\"doSomething()\"></div>")
+    expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick='doSomething()'></div>")
 
     var el = element({
       onclick: "alert(\"foo\")"
     })
 
-    expect(el.html()).to.equal('<div onclick="alert(&quot;foo&quot;)"></div>')
+    expect(el.html()).to.equal("<div onclick='alert(\"foo\")'></div>")
 
     done()
   }
@@ -268,7 +268,7 @@ test.using(
     var el = element()
     el.onclick(functionCall(dirt))
 
-    expect(el.html()).to.equal("<div onclick=\"dirt()\"></div>")
+    expect(el.html()).to.equal("<div onclick='dirt()'></div>")
 
     done()
   }

@@ -19,6 +19,17 @@ module.exports = library.export(
         this.attributes.onclick = call
       }
 
+    Element.prototype.appendStyles = 
+      function(properties) {
+        var style = this.attributes.style || ""
+
+        for(var key in properties) {
+          style += stylePropertySource(key, properties[key])
+        }
+
+        this.attributes.style = style
+      }
+
     function element() {
 
       var el = new Element()
@@ -66,7 +77,7 @@ module.exports = library.export(
             } else if (isAttributes) {
               merge(this.attributes, arg)
             } else if (isStyle) {
-              appendStyles(arg.properties, this)
+              this.appendStyles(arg.properties)
             } else {
               throw new Error("Element doesn't know how to handle " + arg.toString())
             }
@@ -95,16 +106,6 @@ module.exports = library.export(
           children.push(element(arg))
         }
       })
-    }
-
-    function appendStyles(properties, el) {
-      var style = el.attributes.style || ""
-
-      for(var key in properties) {
-        style += stylePropertySource(key, properties[key])
-      }
-
-      el.attributes.style = style
     }
 
     var whitelist = /^(\.|(a|body|button|canvas|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link)(\[|\.|$))/
@@ -159,7 +160,11 @@ module.exports = library.export(
             }
           }
 
-          html = html + " " + key + "=\"" + he.escape(value) + "\""
+          html = html + " " + key + "='" + escape(value) + "'"
+        }
+
+        function escape(value) {
+          return value.replace("'", "&#39;")
         }
 
         html = html + ">"
