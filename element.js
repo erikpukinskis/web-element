@@ -329,6 +329,9 @@ module.exports = library.export(
     }
 
     function stylePropertySource(key, value) {
+      if (key == "content") {
+        value = '"'+value.replace('"', '\"')+'"'
+      }
       return key+": "+value+";"
     }
 

@@ -259,6 +259,26 @@ test.using(
 
 
 test.using(
+  "quote content styles",
+  ["./"],
+  function(expect, done, element) {
+    var after = element.style(
+      ".thing::before", {
+        "content": "burb"
+      }
+    )
+
+    expect(after.styleSource()).to.equal(
+      "\n.thing::before {\n" +
+      "  content: \"burb\";\n" +
+      "}\n"
+    )
+
+    done()
+  }
+)
+
+test.using(
   "onclick",
   ["./element", "nrtv-function-call"],
   function(expect, done, element, functionCall) {
