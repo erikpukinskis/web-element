@@ -64,9 +64,9 @@ module.exports = library.export(
             var isAttributes = isObject && !isRaw && !isStyle
 
             if (isArray) {
-              addElements(this.children, arg)
+              addElements(this, arg)
             } else if (isChild) {
-              this.children.push(arg)
+              this.addChild(arg)
             } else if (isString) {
               if (isASelector(arg)) {
                 selectors.push(arg)
@@ -97,12 +97,12 @@ module.exports = library.export(
       }
     }
 
-    function addElements(children, args) {
+    function addElements(el, args) {
       return args.map(function(arg) {
         if (arg.html) {
-          children.push(arg)
+          el.addChild(arg)
         } else {
-          children.push(element(arg))
+          el.addChild(element(arg))
         }
       })
     }
@@ -129,6 +129,13 @@ module.exports = library.export(
         parsed.classes.push(classes[i])
       }
     }
+
+    Element.prototype.addChild = function(content) {
+        if (typeof content == "undefined") {
+          throw new Error("tried to add an undefined child to element "+this.html())
+        }
+        this.children.push(content)
+      }
 
     Element.prototype.html =
       function() {
@@ -301,7 +308,7 @@ module.exports = library.export(
 
     function containerGenerator() {
       for (var i=0; i<arguments.length; i++) {
-        this.children.push(arguments[i])
+        this.addChild(arguments[i])
       }
     }
 
