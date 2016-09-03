@@ -169,8 +169,23 @@ module.exports = library.export(
         html = html + ">"
 
         if (this.children) {
-          html = html + this.children.map(childToHtml).join("")
+          for(var i=0; i<this.children.length; i++) {
+            var child = this.children[i]
+
+            if (!child) {
+              throw new Error("Added an undefined child to and element. HTML so far: "+html)
+            }
+
+            if (typeof child.__raw == "string") {
+              html = html + child.__raw
+            } else if (child.html) {
+              html = html + child.html()
+            } else {
+              html = html + child
+            }
+          }
         }
+
         html = html + (this.contents || "")
         html = html + "</" + tag + ">"
 
@@ -182,19 +197,6 @@ module.exports = library.export(
         return whatnot.toString()
       } else {
         JSON.stringify(value)
-      }
-    }
-
-    function childToHtml(child) {
-
-      // For some unknown reason if (raw = child.raw) doesn't work here.
-
-      if (typeof child.__raw == "string") {
-        return child.__raw
-      } else if (child.html) {
-        return child.html()
-      } else {
-        return child
       }
     }
 
