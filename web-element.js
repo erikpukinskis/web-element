@@ -1,7 +1,7 @@
 var library = require("nrtv-library")(require)
 
 module.exports = library.export(
-  "nrtv-element",
+  "web-element",
   function() {
     function Element() {
       this.children = []
