@@ -99,6 +99,9 @@ module.exports = library.export(
 
     function addElements(el, args) {
       return args.map(function(arg) {
+        if (typeof arg == "undefined") {
+          el.addChild() // raises error
+        }
         if (arg.html) {
           el.addChild(arg)
         } else {
