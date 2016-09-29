@@ -3,7 +3,7 @@ var test = require("nrtv-test")(require)
 
 test.using(
   "generators",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     var generator = element.generator(["a"])
@@ -34,7 +34,7 @@ test.using(
 
 test.using(
   "template composition",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     var Image = element.template("img")
@@ -52,7 +52,7 @@ test.using(
 
 test.using(
   "generating container templates",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     // It's pretty common for templates to just take some children, so we provide a handy dandy containerGenerator.
@@ -84,7 +84,7 @@ test.using(
 
 test.using(
   "inline styles",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
     var red = element(
       element.style({color: "red"})
@@ -98,7 +98,7 @@ test.using(
 
 test.using(
   "template styles",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     var Foo = element.template(".foo", element.style({"color": "red"}))
@@ -135,7 +135,7 @@ test.using(
 
 test.using(
   "contents",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     expect(element(element()).html()).to.equal("<div><div></div></div>")
@@ -163,7 +163,7 @@ test.using(
 
 test.using(
   "selectors",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     expect(element(".fancy").html()).to.equal("<div class=\"fancy\"></div>")
@@ -182,7 +182,7 @@ test.using(
 
 test.using(
   "attributes",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick='doSomething()'></div>")
@@ -201,7 +201,7 @@ test.using(
 
 test.using(
   "binding",
-  ["./element"],
+  ["./"],
   function(expect, done, element) {
 
     var el = element()
@@ -280,7 +280,7 @@ test.using(
 
 test.using(
   "onclick",
-  ["./element", "nrtv-function-call"],
+  ["./", "nrtv-function-call"],
   function(expect, done, element, functionCall) {
 
     function dirt() {}

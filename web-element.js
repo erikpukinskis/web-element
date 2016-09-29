@@ -210,7 +210,8 @@ module.exports = library.export(
       }
     }
 
-    Element.next = 10000
+    Element.next = typeof document == "undefined" ? 10000*100 : 10000
+
     Element.prototype.assignId =
       function() {
         return this.id || (
