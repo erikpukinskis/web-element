@@ -280,7 +280,7 @@ test.using(
 
 test.using(
   "onclick",
-  ["./", "nrtv-function-call"],
+  ["./", "function-call"],
   function(expect, done, element, functionCall) {
 
     function dirt() {}

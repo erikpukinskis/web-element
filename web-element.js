@@ -257,7 +257,10 @@ module.exports = library.export(
         if (isTemplate) {
           generators.push(arg.generator)
         } else if (isStyle) {
-          cssProperties = arg.properties
+          if (!cssProperties) {
+            cssProperties = {}
+          }
+          merge(cssProperties, arg.properties)
         } else if (isGenerator) {
           generators.push(arg)
         } else {
