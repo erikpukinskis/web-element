@@ -1,7 +1,7 @@
-var test = require("nrtv-test")(require)
+var runTest = require("run-test")(require)
 
 
-test.using(
+runTest(
   "generators",
   ["./"],
   function(expect, done, element) {
@@ -32,7 +32,7 @@ test.using(
 )
 
 
-test.using(
+runTest(
   "template composition",
   ["./"],
   function(expect, done, element) {
@@ -50,7 +50,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "generating container templates",
   ["./"],
   function(expect, done, element) {
@@ -82,7 +82,7 @@ test.using(
 )
 
 
-test.using(
+runTest(
   "inline styles",
   ["./"],
   function(expect, done, element) {
@@ -96,7 +96,7 @@ test.using(
   }
 )
 
-test.using(
+runTest(
   "template styles",
   ["./"],
   function(expect, done, element) {
@@ -133,7 +133,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "contents",
   ["./"],
   function(expect, done, element) {
@@ -161,7 +161,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "selectors",
   ["./"],
   function(expect, done, element) {
@@ -180,7 +180,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "attributes",
   ["./"],
   function(expect, done, element) {
@@ -199,7 +199,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "binding",
   ["./"],
   function(expect, done, element) {
@@ -216,7 +216,7 @@ test.using(
 
 
 
-test.using(
+runTest(
   "bodies",
 
   ["./"],
@@ -237,7 +237,7 @@ test.using(
 )
 
 
-test.using(
+runTest(
   "standalone styles",
   ["./"],
   function(expect, done, element) {
@@ -258,7 +258,7 @@ test.using(
 )
 
 
-test.using(
+runTest(
   "quote content styles",
   ["./"],
   function(expect, done, element) {
@@ -278,7 +278,7 @@ test.using(
   }
 )
 
-test.using(
+runTest(
   "onclick",
   ["./", "function-call"],
   function(expect, done, element, functionCall) {
