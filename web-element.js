@@ -375,10 +375,15 @@ module.exports = library.export(
       }
     }
 
-    element.stylesheet = function() {
+    element.stylesheet = function(styles) {
       var el = element("style")
-      for(var i=0; i<arguments.length; i++) {
-        el.children.push(arguments[i].styleSource())
+
+      if (!Array.isArray(styles)) {
+        styles = Array.prototype.slice.call(arguments)
+      }
+
+      for(var i=0; i<styles.length; i++) {
+        el.children.push(styles[i].styleSource())
       }
       return el
     }
