@@ -383,7 +383,11 @@ module.exports = library.export(
       }
 
       for(var i=0; i<styles.length; i++) {
-        el.children.push(styles[i].styleSource())
+        var style = styles[i]
+        if (style.styleSource) {
+          style = style.styleSource()
+        }
+        el.children.push(style)
       }
       return el
     }
