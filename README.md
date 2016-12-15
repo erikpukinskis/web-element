@@ -1,4 +1,4 @@
-**web-element** generates HTML with a pretty flexible syntax.
+**web-element** generates HTML. That's it.
 
 You can pass in a selector, attributes, and contents and it gives you back some HTML.
 
