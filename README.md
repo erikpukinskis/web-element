@@ -1,10 +1,10 @@
-# Element
-
-Generates HTML with a pretty flexible syntax.
+**web-element** generates HTML with a pretty flexible syntax.
 
 You can pass in a selector, attributes, and contents and it gives you back some HTML.
 
 ```javascript
+var element = require("web-element")
+
 element(
   "button.small", 
   {onclick: "doSomething()"},
