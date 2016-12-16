@@ -64,7 +64,7 @@ module.exports = library.export(
             var isAttributes = isObject && !isRaw && !isStyle
 
             if (isArray) {
-              addElements(this, arg)
+              addChildren(this, arg)
             } else if (isChild) {
               this.addChild(arg)
             } else if (isString) {
@@ -97,15 +97,20 @@ module.exports = library.export(
       }
     }
 
-    function addElements(el, args) {
+    function addChildren(el, args) {
       return args.map(function(arg) {
         if (typeof arg == "undefined") {
           el.addChild() // raises error
         }
         if (arg.html) {
           el.addChild(arg)
-        } else {
+        } else if (isASelector(arg)) {
           el.addChild(element(arg))
+        } else if (typeof arg == "string") {
+          el.addChild(arg)
+        } else {
+          console.log("child", arg)
+          throw new Error("Not sure what to do with child.")
         }
       })
     }
