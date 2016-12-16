@@ -1,7 +1,5 @@
 var runTest = require("run-test")(require)
 
-// runTest.only("spans in text")
-
 runTest(
   "generators",
   ["./"],
@@ -309,3 +307,16 @@ runTest(
     done()
   }
 )
+
+runTest(
+  "children can be numbers",
+  ["./"],
+  function(expect, done, element) {
+    var el = element(".answer", 42)
+
+    expect(el.html()).to.equal("<div class=\"answer\">42</div>")
+
+    done()
+  }
+)
+

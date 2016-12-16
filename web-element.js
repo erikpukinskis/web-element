@@ -77,6 +77,8 @@ module.exports = library.export(
               merge(this.attributes, arg)
             } else if (isStyle) {
               this.appendStyles(arg.properties)
+            } else if (arg.toString) {
+              this.addChild(arg.toString())
             } else {
               throw new Error("Element doesn't know how to handle " + arg.toString())
             }
