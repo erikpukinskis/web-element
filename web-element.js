@@ -108,11 +108,8 @@ module.exports = library.export(
           el.addChild(arg)
         } else if (isASelector(arg)) {
           el.addChild(element(arg))
-        } else if (typeof arg == "string") {
-          el.addChild(arg)
         } else {
-          console.log("child", arg)
-          throw new Error("Not sure what to do with child.")
+          el.addChild(arg)
         }
       })
     }
@@ -120,6 +117,9 @@ module.exports = library.export(
     var whitelist = /^(\.|(a|body|button|canvas|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link)(\[|\.|$))/
 
     function isASelector(string) {
+      if (typeof string != "string") {
+        return false
+      }
       var itIs = !!string.match(whitelist)
       return itIs
     }
