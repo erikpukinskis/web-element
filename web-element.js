@@ -100,17 +100,13 @@ module.exports = library.export(
     }
 
     function addChildren(el, args) {
-      return args.map(function(arg) {
-        if (typeof arg == "undefined") {
-          el.addChild() // raises error
-        }
-        if (arg.html) {
-          el.addChild(arg)
-        } else if (isASelector(arg)) {
+      args.map(function(arg) {
+        if (isASelector(arg) || Array.isArray(arg)) {
           el.addChild(element(arg))
         } else {
           el.addChild(arg)
         }
+
       })
     }
 

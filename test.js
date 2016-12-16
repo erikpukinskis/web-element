@@ -320,3 +320,15 @@ runTest(
   }
 )
 
+runTest(
+  "arrays of arrays of elements",
+  ["./"],
+  function(expect, done, element) {
+    var el = element(["hi", [element(".ho")], "the dairy o"])
+
+    expect(el.html()).to.equal("<div>hi<div><div class=\"ho\"></div></div>the dairy o</div>")
+
+    done()
+  }
+)
+
