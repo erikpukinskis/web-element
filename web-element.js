@@ -38,60 +38,97 @@ module.exports = library.export(
       return el
     }
 
+    function getArgType(arg) {
+      var isArray = Array.isArray(arg)
+      var isString = typeof arg == "string"
+      var isSelector = isASelector(arg)
+      var isElement = arg && arg.__isNrtvElement == true
+      var isRaw = typeof arg.__raw == "string"
+      var isStyle = arg.__isNrtvElementStyle
+      var isObject = typeof arg == "object"
+      var isAttributes = isObject && !isRaw && !isStyle
+      var isStringable = !!arg.toString
+
+
+      if (isArray) {
+        return "array"
+      } else if (isElement || isRaw) {
+        return "child"
+      } else if (isString && isSelector) {
+        return "selector"
+      } else if (isString && !isSelector) {
+        return "child"
+      } else if (isAttributes) {
+        return "attributes"
+      } else if (isStyle) {
+        return "style"
+      } else if (isStringable) {
+        return "stringable"
+      } else {
+        throw new Error("Element doesn't know how to handle " + arg.toString())
+      }
+    }
+
+
     element.generator =
       function(args) {
-        return function() {
+
+        args = Array.prototype.slice.call(args)
+
+        args.forEach(checkForUndefinedArgs)
+
+        function generate() {
           if (this.constructor.name != "Element") {
             throw new Error("Tried run an element generator on "+this+" but it's not an element")
           }
-          var selectors = []
 
-          for(var i=0; i<args.length; i++) {
-            var arg = args[i]
-  
-            if (typeof arg == "undefined") {
-              args = Array.prototype.slice.call(args)
-              throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th argument is undefined")
-            }
-  
-            var isArray = Array.isArray(arg)
-            var isString = typeof arg == "string"
-            var isElement = arg && arg.__isNrtvElement == true
-            var isRaw = typeof arg.__raw == "string"
-            var isStyle = arg.__isNrtvElementStyle
-            var isChild = isElement || isRaw
-            var isObject = typeof arg == "object"
-            var isAttributes = isObject && !isRaw && !isStyle
-
-            if (isArray) {
-              addChildren(this, arg)
-            } else if (isChild) {
-              this.addChild(arg)
-            } else if (isString) {
-              if (isASelector(arg)) {
-                selectors.push(arg)
-              } else {
-                this.contents = arg
-              }
-            } else if (isAttributes) {
-              merge(this.attributes, arg)
-            } else if (isStyle) {
-              this.appendStyles(arg.properties)
-            } else if (arg.toString) {
-              this.addChild(arg.toString())
-            } else {
-              throw new Error("Element doesn't know how to handle " + arg.toString())
-            }
-          }
-
-          for (var i=0; i<selectors.length; i++) {
-
-            addSelector(this, selectors[i])
-          }
+          args.forEach(addArg.bind(this))
 
           return this
         }
+
+        function checkForUndefinedArgs(arg, i) {
+
+          if (typeof arg == "undefined") {
+            throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th argument is undefined")
+          }
+
+          var type = getArgType(arg)
+
+          if (type == "array") {
+            arg.forEach(checkForUndefinedChild)
+          }
+        }
+
+
+        function checkForUndefinedChild(child, i) {
+          if (typeof child == "undefined") {
+            throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th child in your array is undefined")
+          }
+        }
+
+        return generate
       }
+
+    function addArg(arg) {
+      var type = getArgType(arg)
+
+      if (type == "array") {
+        addChildren(this, arg)
+      } else if (type == "child") {
+        this.addChild(arg)
+      } else if (type == "selector") {
+        addSelector(this, arg)
+      } else if (type == "contents") {
+        this.contents = arg
+      } else if (type == "attributes") {
+        merge(this.attributes, arg)
+      } else if (type == "style") {
+        this.appendStyles(arg.properties)
+      } else if (type == "stringable") {
+        this.addChild(arg.toString())
+      }
+    }
 
     function merge(a, b) {
       for(key in b) {
@@ -165,7 +202,7 @@ module.exports = library.export(
           var value = this.attributes[key]
 
           if (typeof value != "string") {
-            if (value.evalable) {
+            if (value && value.evalable) {
               throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
             } else {
               throw new Error("You said you wanted the "+key+" attribute to be "+stringify(value)+" on your element, but attribute values need to be strings.")
@@ -185,7 +222,7 @@ module.exports = library.export(
           for(var i=0; i<this.children.length; i++) {
             var child = this.children[i]
 
-            if (!child) {
+            if (typeof child == "undefined") {
               throw new Error("Added an undefined child to and element. HTML so far: "+html)
             }
 
