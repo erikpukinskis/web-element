@@ -120,7 +120,7 @@ module.exports = library.export(
       } else if (type == "contents") {
         this.addChild(arg)
       } else if (type == "selector") {
-        addSelector(this, arg)
+        this.addSelector(arg)
       } else if (type == "attributes") {
         merge(this.attributes, arg)
       } else if (type == "style") {
@@ -157,7 +157,7 @@ module.exports = library.export(
       return itIs
     }
 
-    function addSelector(parsed, selector) {
+    Element.prototype.addSelector = function(selector) {
       if (!selector) { selector = "" }
 
       var parts = selector.split(".")
@@ -165,11 +165,11 @@ module.exports = library.export(
       var classes = parts.slice(1)
 
       if (tagName.length > 0) {
-        parsed.tagName = tagName
+        this.tagName = tagName
       }
 
       for(var i=0; i<classes.length; i++) {
-        parsed.classes.push(classes[i])
+        this.classes.push(classes[i])
       }
     }
 
