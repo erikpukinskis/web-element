@@ -117,10 +117,10 @@ module.exports = library.export(
         addChildren(this, arg)
       } else if (type == "child") {
         this.addChild(arg)
+      } else if (type == "contents") {
+        this.addChild(arg)
       } else if (type == "selector") {
         addSelector(this, arg)
-      } else if (type == "contents") {
-        this.contents = arg
       } else if (type == "attributes") {
         merge(this.attributes, arg)
       } else if (type == "style") {
