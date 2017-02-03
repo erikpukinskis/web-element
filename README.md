@@ -76,16 +76,16 @@ var mealTemplate = element.template(
   }
 )
 
-var page = "<body>"
+var page = element("body")
 
 db.query("SELECT id, title FROM meals", function(id, title) {
-  page += mealTemplate(id, title).html()
+  var meal = mealTemplate(id, title)
+  page.addChild(meal)
 })
 
-page += element.stylesheet(mealTemplate)
-page += "</body>"
+page.addToHead(element.stylesheet(mealTemplate))
 
-response.send(page)
+response.send(page.html())
 ```
 
 ### Methods
