@@ -91,17 +91,27 @@ response.send(page.html())
 ### Methods
 
 ```javascript
-element.addSelector(".foo")
+var el = element()
 
-element.appendStyles({
+el.addSelector(".foo")
+
+el.appendStyles({
   "display": "none"
 })
 
-element.onclick("alert(\"hi\")")
+el.onclick("alert(\"hi\")")
 
-element.addChild(element("baby element"))
+el.addChild(element("baby element"))
 
-element.assignId()
+el.assignId() // el.id == "fj29"
+```
+
+Generates
+
+```html
+<div class="foo" style="display: none" onclick="alert(\"hi\")" id="fj29">
+  <div>baby element</div>
+</div>
 ```
 
 ## Why?
