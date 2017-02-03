@@ -88,6 +88,22 @@ page += "</body>"
 response.send(page)
 ```
 
+### Methods
+
+```javascript
+element.addSelector(".foo")
+
+element.appendStyles({
+  "display": "none"
+})
+
+element.onclick("alert(\"hi\")")
+
+element.addChild(element("baby element"))
+
+element.assignId()
+```
+
 ## Why?
 
 When someone tries to learn how to build web apps, they have to learn Javascript, HTML, and CSS all at once. Web-element lets them build web pages using only JavaScript.
