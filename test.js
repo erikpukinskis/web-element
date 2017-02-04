@@ -332,3 +332,15 @@ runTest(
   }
 )
 
+
+runTest(
+  "br",
+  ["./"],
+  function(expect, done, element) {
+    expect(element("br").html()).to.equal("<br>")
+
+    done()
+  }
+)
+
+

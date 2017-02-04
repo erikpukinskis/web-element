@@ -147,7 +147,7 @@ module.exports = library.export(
       })
     }
 
-    var whitelist = /^(\.|(a|body|button|canvas|video|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link)(\[|\.|$))/
+    var whitelist = /^(\.|(a|br|hr|body|button|canvas|video|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link)(\[|\.|$))/
 
     function isASelector(string) {
       if (typeof string != "string") {
@@ -185,6 +185,10 @@ module.exports = library.export(
 
         var tag = this.tagName || "div"
 
+        if (tag == "br" || tag == "hr") {
+          var noClose = true
+        }
+
         var html = ""
 
         html = "<" + tag
@@ -217,6 +221,10 @@ module.exports = library.export(
         }
 
         html = html + ">"
+
+        if (noClose) {
+          return html
+        }
 
         if (this.children) {
           for(var i=0; i<this.children.length; i++) {
