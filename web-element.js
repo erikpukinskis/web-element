@@ -173,11 +173,16 @@ module.exports = library.export(
       }
     }
 
-    Element.prototype.addChild = function(content) {
-        if (typeof content == "undefined") {
+    Element.prototype.addChild = Element.prototype.addChildren = function(child, more) {
+      debugger
+        if (more) {
+          var children = Array.prototype.slice.call(arguments)
+          addChildren(this, children)
+        } else if (typeof child == "undefined") {
           throw new Error("tried to add an undefined child to element "+this.html())
+        } else {
+          this.children.push(child)
         }
-        this.children.push(content)
       }
 
     Element.prototype.html =
