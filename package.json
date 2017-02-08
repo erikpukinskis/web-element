@@ -1,6 +1,6 @@
 {
   "name": "web-element",
-  "version": "0.72.0",
+  "version": "0.73.0",
   "description": "Generate HTML for a web page",
   "main": "web-element.js",
   "dependencies": {
