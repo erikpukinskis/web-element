@@ -99,6 +99,17 @@ var responsive = element.style(
     }
   }
 )
+
+
+```
+outputs
+
+```css
+@media (max-width: 600px) {
+  .responsive {
+    font-size: 0.8em;
+  }
+}
 ```
 
 ### Methods
