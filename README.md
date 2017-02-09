@@ -88,6 +88,19 @@ page.addToHead(element.stylesheet(mealTemplate))
 response.send(page.html())
 ```
 
+### Media queries
+
+```javascript
+var responsive = element.style(
+  ".responsive",
+  {
+    "@media (max-width: 600px)": {
+      "font-size": "0.8em"
+    }
+  }
+)
+```
+
 ### Methods
 
 ```javascript
