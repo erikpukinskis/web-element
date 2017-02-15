@@ -102,7 +102,7 @@ var responsive = element.style(
 
 
 ```
-outputs
+generates:
 
 ```css
 @media (max-width: 600px) {

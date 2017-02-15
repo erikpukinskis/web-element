@@ -214,7 +214,7 @@ module.exports = library.export(
 
           if (typeof value != "string") {
             if (value && value.evalable) {
-              throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
+              throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do "+value.identifier+".evalable()?")
             } else {
               throw new Error("You said you wanted the "+key+" attribute to be "+stringify(value)+" on your element, but attribute values need to be strings.")
             }
