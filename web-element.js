@@ -214,7 +214,7 @@ module.exports = library.export(
 
           if (typeof value != "string") {
             if (value && value.evalable) {
-              throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do "+value.identifier+".evalable()?")
+              throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
             } else {
               throw new Error("You said you wanted the "+key+" attribute to be "+stringify(value)+" on your element, but attribute values need to be strings.")
             }
@@ -439,6 +439,9 @@ module.exports = library.export(
 
       for(var i=0; i<styles.length; i++) {
         var style = styles[i]
+        if (typeof style == "undefined") {
+          throw new Error(i+"th style you passed to element.stylesheet was undefined. Sad.")
+        }
         if (style.styleSource) {
           style = style.styleSource()
         }
