@@ -279,6 +279,36 @@ runTest(
 )
 
 runTest(
+  "descendant styles",
+  ["./"],
+  function(expect, done, element) {
+
+    var button = element.style(".button", {
+      "background": "red",
+      "color": "white",
+
+      ".lit": {
+        "background": "pink",
+      }
+    })
+
+    expect(button.styleSource().trim())
+    .to.equal([
+      ".button {",
+      "  background: red;",
+      "  color: white;",
+      "}",
+      "",
+      ".button.lit {",
+      "  background: pink;",
+      "}",
+    ].join("\n"))
+
+    done()
+  }
+)
+
+runTest(
   "onclick",
   ["./", "function-call"],
   function(expect, done, element, functionCall) {
@@ -343,5 +373,7 @@ runTest(
     done()
   }
 )
+
+
 
 

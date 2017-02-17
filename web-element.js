@@ -376,6 +376,7 @@ module.exports = library.export(
 
     function styleSource(identifer, properties) {
         var mediaQueries = ""
+        var descendants = ""
 
         var css = "\n" 
           + identifer
@@ -391,12 +392,20 @@ module.exports = library.export(
                 properties[key]
               )
 
+          } else if (key.match(/[.#]/)) {
+
+            descendants += getDescendantSource(
+                key,
+                identifer,
+                properties[key]
+              )
+
           } else {
             css += "\n  "+stylePropertySource(key, properties[key])
           }
         }
 
-        return css + "\n}\n" +mediaQueries
+        return css + "\n}\n" +mediaQueries + descendants
     }
 
     function stylePropertySource(key, value) {
@@ -413,6 +422,17 @@ module.exports = library.export(
         css += "\n  "+name+": "+styles[name]+";"
       }
       css += "\n}\n}"
+      return css
+    }
+
+    function getDescendantSource(descendantSelector, parentSelector, styles) {
+
+      var css = "\n" + parentSelector+descendantSelector + " {"
+
+      for (var name in styles) {
+        css += "\n  "+name+": "+styles[name]+";"
+      }
+      css += "\n}"
       return css
     }
 
