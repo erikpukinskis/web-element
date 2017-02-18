@@ -94,7 +94,7 @@ function generator() {
       function checkForUndefinedArgs(arg, i) {
 
         if (typeof arg == "undefined") {
-          throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th argument is undefined")
+          throw new Error("You're trying to make an element out of "+JSON.stringify(args).slice(0,1000)+" but the "+i+"th argument is undefined")
         }
 
         var type = getArgType(arg)
@@ -107,7 +107,13 @@ function generator() {
 
       function checkForUndefinedChild(child, i) {
         if (typeof child == "undefined") {
-          throw new Error("You're trying to make an element out of "+JSON.stringify(args)+" but the "+i+"th child in your array is undefined")
+          var summarize = JSON.stringify(args).slice(0,1000)
+
+          if (summarize.length == 1000) {
+            summarize += "... "
+          }
+
+          throw new Error("You're trying to make an element out of "+summarize+" but the "+i+"th child in your array is undefined")
         }
       }
 
