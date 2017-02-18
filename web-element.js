@@ -1,27 +1,6 @@
 var library = require("module-library")(require)
 
 
-
-
-
-
-
-generator.defineOn = function(bridge) {
-  var binding = bridge.remember("web-element")
-  if (binding) { return binding }
-  binding = bridge.defineSingleton("element", generator)
-  bridge.see("web-element", binding)
-  return binding
-}
-
-
-
-
-
-
-
-
-
 module.exports = library.export(
   "web-element",
   generator
@@ -500,6 +479,14 @@ function generator() {
       throw new Error("You tried to use "+JSON.stringify(html)+" as raw HTML, but it isn't a string. HTML is strings bro.")
     }
     return {__raw: html}
+  }
+
+  element.defineOn = function(bridge) {
+    var binding = bridge.remember("web-element")
+    if (binding) { return binding }
+    binding = bridge.defineSingleton("element", generator)
+    bridge.see("web-element", binding)
+    return binding
   }
 
   return element
