@@ -198,6 +198,17 @@ runTest(
 )
 
 
+runTest("javascript attributes",
+  ["./"],
+  function(expect, done, element) {
+    var el = element("a", {href: "javascript:console.log('ezrp')"})
+
+    expect(el.html()).to.equal("<a href='javascript:console.log(&#39;ezrp&#39;)'></a>")
+    done()
+  }
+)
+
+
 
 runTest(
   "binding",

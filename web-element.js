@@ -234,7 +234,8 @@ function generator() {
       }
 
       function escape(value) {
-        return value.replace("'", "&#39;")
+
+        return value.replace(/'/g, "&#39;")
       }
 
       html = html + ">"
