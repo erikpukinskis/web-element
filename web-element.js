@@ -226,7 +226,7 @@ function generator() {
           if (value && value.evalable) {
             throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
           } else {
-            throw new Error("You said you wanted the "+key+" attribute to be "+stringify(value)+" on your element, but attribute values need to be strings.")
+            throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. The attributes object looks like this: "+stringify(this.attributes))
           }
         }
 
@@ -268,13 +268,20 @@ function generator() {
       return html
     }
 
-  function stringify(whatnot) {
-    if (typeof whatnot == "function") {
-      return whatnot.toString()
-    } else {
-      return JSON.stringify(whatnot)
+    function stringify(whatnot) {
+      if (typeof whatnot == "function") {
+        return whatnot.toString()
+      } else if (typeof whatnot == "object") {
+        if (Array.isArray(whatnot)) {
+          return JSON.stringify(whatnot)
+        }
+        return "[ object "+whatnot.constructor.name+" with keys "+Object.keys(whatnot).join(", ")+" ]"
+      } else {
+        return JSON.stringify(whatnot)
+      }
     }
-  }
+
+
 
   Element.next = typeof document == "undefined" ? 10000*100 : 10000
 
