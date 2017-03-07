@@ -2,6 +2,17 @@ var runTest = require("run-test")(require)
 
 
 runTest(
+  ".htmlable objects can be children",
+  ["./"],
+  function(expect, done, element) {
+    var el = element({html: function() { return "waz" }})
+    expect(el.html()).to.equal("<div>waz</div>")
+    done()
+  }
+)
+
+
+runTest(
   "generators",
   ["./"],
   function(expect, done, element) {

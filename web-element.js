@@ -46,7 +46,7 @@ function generator() {
     var isArray = Array.isArray(arg)
     var isString = typeof arg == "string"
     var isSelector = isASelector(arg)
-    var isElement = arg && arg.__isNrtvElement == true
+    var isElement = arg && arg.__isNrtvElement == true || typeof arg.html == "function"
     var isRaw = typeof arg.__raw == "string"
     var isStyle = arg.__isNrtvElementStyle
     var isObject = typeof arg == "object"
@@ -226,7 +226,7 @@ function generator() {
           if (value && value.evalable) {
             throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
           } else {
-            throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. The attributes object looks like this: "+stringify(this.attributes))
+            throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes object looks like this: "+stringify(this.attributes))
           }
         }
 
