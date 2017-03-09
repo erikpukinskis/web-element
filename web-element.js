@@ -198,7 +198,15 @@ function generator() {
     }
 
   Element.prototype.html =
-    function() {
+    function(previousIds) {
+
+      if (!previousIds) {
+        previousIds = new Set()
+      }
+
+      if (!this.__uniqueId) {
+        this.__uniqueId = parseInt(Math.random()*100000000)
+      }
 
       var tag = this.tagName || "div"
 
@@ -240,6 +248,14 @@ function generator() {
 
       html = html + ">"
 
+      if (previousIds.has(this.__uniqueId)) {
+        throw new Error("Already tried to render "+html.slice(0,100)+". Do you have a circular dependecy in your element tree?")
+      } else {
+        previousIds.add(this.__uniqueId)
+      }
+
+
+
       if (noClose) {
         return html
       }
@@ -255,7 +271,7 @@ function generator() {
           if (typeof child.__raw == "string") {
             html = html + child.__raw
           } else if (child.html) {
-            html = html + child.html()
+            html = html + child.html(previousIds)
           } else {
             html = html + child
           }
@@ -275,7 +291,11 @@ function generator() {
         if (Array.isArray(whatnot)) {
           return JSON.stringify(whatnot)
         }
-        return "[ object "+whatnot.constructor.name+" with keys "+Object.keys(whatnot).join(", ")+" ]"
+        var keys = Object.keys(whatnot)
+        for(var key in whatnot) {
+          keys.push(key)
+        }
+        return "[ object "+whatnot.constructor.name+" with keys "+keys.join(", ")+" ]"
       } else {
         return JSON.stringify(whatnot)
       }
