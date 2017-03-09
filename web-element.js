@@ -198,22 +198,49 @@ function generator() {
     }
 
   Element.prototype.html =
-    function(previousIds) {
+    function(stack) {
 
-      if (!previousIds) {
-        previousIds = new Set()
+      if (!stack) {
+        stack = {
+          ids: [],
+          html: []
+        }
       }
 
       if (!this.__uniqueId) {
         this.__uniqueId = parseInt(Math.random()*100000000)
       }
 
-      var tag = this.tagName || "div"
+      var html = openingTag.call(this)
 
-      if (tag == "br" || tag == "hr") {
-        var noClose = true
+      if (stack.ids.indexOf(this.__uniqueId) >= 0) {  
+
+        console.log("element stack:\n  "+stack.html.join("\n  "))
+
+        throw new Error("Already tried to render "+html.slice(0,100)+". Do you have a circular dependecy in your element tree?")
+
+      } else {
+        stack.ids.push(this.__uniqueId)
+        stack.html.push(html.slice(0,100))
       }
 
+      var tag = this.tagName || "div"
+
+      var needsToClose = tag != "br" && tag != "hr"
+
+      if (needsToClose) {
+        html = addChildrenToHtml(this.children, html, stack)
+        html = html + (this.contents || "")
+        html = html + "</" + tag + ">"
+      }
+
+      stack.ids.pop()
+      stack.html.pop()
+      return html
+    }
+
+    function openingTag() {
+      var tag = this.tagName || "div"
       var html = ""
 
       html = "<" + tag
@@ -227,59 +254,48 @@ function generator() {
       }
 
       for (key in this.attributes || {}) {
-
         var value = this.attributes[key]
-
-        if (typeof value != "string") {
-          if (value && value.evalable) {
-            throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
-          } else {
-            throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes object looks like this: "+stringify(this.attributes))
-          }
-        }
-
+        ensureValue(value, key)
         html = html + " " + key + "='" + escape(value) + "'"
-      }
-
-      function escape(value) {
-
-        return value.replace(/'/g, "&#39;")
       }
 
       html = html + ">"
 
-      if (previousIds.has(this.__uniqueId)) {
-        throw new Error("Already tried to render "+html.slice(0,100)+". Do you have a circular dependecy in your element tree?")
-      } else {
-        previousIds.add(this.__uniqueId)
-      }
+      return html
+    }
 
+    function escape(value) {
+      return value.replace(/'/g, "&#39;")
+    }
 
-
-      if (noClose) {
-        return html
-      }
-
-      if (this.children) {
-        for(var i=0; i<this.children.length; i++) {
-          var child = this.children[i]
-
-          if (typeof child == "undefined") {
-            throw new Error("Added an undefined child to and element. HTML so far: "+html)
-          }
-
-          if (typeof child.__raw == "string") {
-            html = html + child.__raw
-          } else if (child.html) {
-            html = html + child.html(previousIds)
-          } else {
-            html = html + child
-          }
+    function ensureValue(value, key) {
+      if (typeof value != "string") {
+        if (value && value.evalable) {
+          throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
+        } else {
+          throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes object looks like this: "+stringify(this.attributes))
         }
       }
+    }
 
-      html = html + (this.contents || "")
-      html = html + "</" + tag + ">"
+    function addChildrenToHtml(children, html, stack) {
+      if (!children) { return html }
+
+      for(var i=0; i<children.length; i++) {
+        var child = children[i]
+
+        if (typeof child == "undefined") {
+          throw new Error("Added an undefined child to and element. HTML so far: "+html)
+        }
+
+        if (typeof child.__raw == "string") {
+          html = html + child.__raw
+        } else if (child.html) {
+          html = html + child.html(stack)
+        } else {
+          html = html + child
+        }
+      }
 
       return html
     }
