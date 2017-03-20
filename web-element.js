@@ -170,6 +170,10 @@ function generator() {
   Element.prototype.addSelector = function(selector) {
     if (!selector) { selector = "" }
 
+    if (!selector.split) {
+      throw new Error("Tried to add selector "+selector+" to web element "+this.html().slice(0,100)+", but it doesn't look like a string?")
+    }
+    
     var parts = selector.split(".")
     var tagName = parts[0]
     var classes = parts.slice(1)
