@@ -330,6 +330,36 @@ runTest(
   }
 )
 
+
+runTest(
+  "pseudoelements",
+  ["./"],
+  function(expect, done, element) {
+
+    var arrow = element.style(".arrow", {
+      "::after": {
+        "content": "\"hiya\"",
+      }
+    })
+
+    console.log(arrow.styleSource())
+
+
+    expect(arrow.styleSource().trim())
+    .to.equal([
+      ".arrow {",
+      "}",
+      "",
+      ".arrow::after {",
+      "  content: \"hiya\";",
+      "}",
+    ].join("\n"))
+
+    done()
+  }
+)
+
+
 runTest(
   "onclick",
   ["./", "function-call"],

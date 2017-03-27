@@ -100,15 +100,48 @@ var responsive = element.style(
   }
 )
 
+## Descendant styles
 
+You can also include second level styles and pseduoelements. Don't forget to escape your content strings!
+
+```javascript
+var callout = element.style(
+  ".callout",
+  {
+    "border-bottom": "2pt solid cyan",
+
+    ".error": {
+      "border-color": "red",
+    },
+
+    "::after": {
+      "content": "\"\"",
+      "width": "6pt",
+      "height": "6pt",
+      "background": "cyan",
+      "vertical-align": "-2pt",
+    }
+  }
+)
 ```
+
 generates:
 
 ```css
-@media (max-width: 600px) {
-  .responsive {
-    font-size: 0.8em;
-  }
+.callout {
+  border-bottom: 2pt solid cyan;
+}
+
+.callout.error {
+  border-color: red;
+}
+
+.callout::after {
+  content: ".";
+  width: 6pt;
+  height: 6pt;
+  background: cyan;
+  vertical-align: -2pt;
 }
 ```
 
