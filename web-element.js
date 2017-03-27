@@ -201,6 +201,10 @@ function generator() {
       }
     }
 
+  Element.prototype.addAttribute = function(key, value) {
+    this.attributes[key] = value
+  }
+
   Element.prototype.html =
     function(stack) {
 
