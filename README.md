@@ -99,8 +99,9 @@ var responsive = element.style(
     }
   }
 )
+```
 
-## Descendant styles
+### Descendant styles
 
 You can also include second level styles and pseduoelements. Don't forget to escape your content strings!
 
