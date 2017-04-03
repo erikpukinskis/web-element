@@ -88,7 +88,7 @@ page.addToHead(element.stylesheet(mealTemplate))
 response.send(page.html())
 ```
 
-### Media queries
+## Media queries
 
 ```javascript
 var responsive = element.style(
@@ -101,7 +101,7 @@ var responsive = element.style(
 )
 ```
 
-### Descendant styles
+## Descendant styles
 
 You can also include second level styles and pseduoelements. Don't forget to escape your content strings!
 
@@ -146,7 +146,7 @@ generates:
 }
 ```
 
-### Methods
+## Methods
 
 ```javascript
 var el = element()
