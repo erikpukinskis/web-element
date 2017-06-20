@@ -201,6 +201,12 @@ function generator() {
       }
     }
 
+  Element.prototype.addAttributes = function(object) {
+    for (var key in object) {
+      this.addAttribute(key, object[key])
+    }
+  }
+
   Element.prototype.addAttribute = function(key, value) {
     if (typeof this.attributes[key] != "undefined") {
       throw new Error("Tried to set "+key+" attribute on element to "+value+" but it was already set to "+this.attributes[key]+". I am but a lowly computer and resolving this is too much for me.")

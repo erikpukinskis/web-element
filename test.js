@@ -204,6 +204,8 @@ runTest(
 
     expect(el.html()).to.equal("<div onclick='alert(\"foo\")'></div>")
 
+    el.addAttributes({"data-foo": "bar"})
+    
     done()
   }
 )
