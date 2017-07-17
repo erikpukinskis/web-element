@@ -1,10 +1,16 @@
-var library = require("module-library")(require)
 
 
-module.exports = library.export(
-  "web-element",
-  generator
-)
+if (typeof require != "undefined") {
+
+  var library = require("module-library")(require)
+
+  module.exports = library.export(
+    "web-element",
+    generator
+  )
+} else {
+  var element = generator()
+}
 
 function generator() {
   function Element() {
