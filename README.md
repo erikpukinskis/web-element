@@ -162,6 +162,13 @@ el.onclick("alert(\"hi\")")
 el.addChild(element("baby element"))
 
 el.assignId() // el.id == "fj29"
+
+el.addAttribute("src", "foo.png")
+
+el.addAttributes({
+  width: 320,
+  height: 240,
+})
 ```
 
 Generates
