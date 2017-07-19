@@ -313,7 +313,7 @@ runTest(
 
       ".lit": {
         "background": "pink",
-      }
+      },
     })
 
     expect(button.styleSource().trim())
@@ -327,6 +327,24 @@ runTest(
       "  background: pink;",
       "}",
     ].join("\n"))
+
+
+    button = element.style(".button", {
+      " div": {
+        "display": "inline-block",
+      }
+    })
+
+    expect(button.styleSource().trim())
+    .to.equal([
+      ".button {",
+      "}",
+      "",
+      ".button div {",
+      "  display: inline-block;",
+      "}",
+    ].join("\n"))
+
 
     done()
   }
