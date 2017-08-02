@@ -163,7 +163,7 @@ function generator() {
     })
   }
 
-  var whitelist = /^(\.|(label|a|br|hr|body|button|canvas|video|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link)(\[|\.|$))/
+  var whitelist = /^(\.|(label|a|br|hr|body|button|canvas|video|div|form|h1|h2|h3|head|html|iframe|img|input|li|meta|p|script|span|style|textarea|ul|link|ol)(\[|\.|$))/
 
   function isASelector(string) {
     if (typeof string != "string") {
