@@ -250,7 +250,7 @@ function generator() {
 
       var tag = this.tagName || "div"
 
-      var needsToClose = tag != "br" && tag != "hr"
+      var needsToClose = tag != "br" && tag != "hr" && tag != "input"
 
       if (needsToClose) {
         html = addChildrenToHtml(this.children, html, stack)
