@@ -174,7 +174,7 @@ el.addAttributes({
 Generates
 
 ```html
-<div class="foo" style="display: none" onclick="alert(\"hi\")" id="fj29">
+<div class="foo" style="display: none" onclick="alert(\"hi\")" id="fj29" src="foo.png" width="320" height="240">
   <div>baby element</div>
 </div>
 ```
