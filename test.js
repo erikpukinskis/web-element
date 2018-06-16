@@ -1,5 +1,15 @@
 var runTest = require("run-test")(require)
 
+runTest(
+  "custom tags",
+  ["./"],
+  function(expect, done, element) {
+    var hen = element(element.tag("hen"))
+    expect(hen.html()).to.equal("<hen></hen>")
+    done()
+  }
+)
+
 
 runTest(
   ".htmlable objects can be children",

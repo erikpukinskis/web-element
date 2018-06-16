@@ -17,6 +17,8 @@ function generator() {
     this.children = []
     this.classes = []
     this.attributes = {}
+    this.tagName = null
+    this.style = null
     this.__isNrtvElement = true
   }
 
@@ -54,9 +56,10 @@ function generator() {
     var isSelector = isASelector(arg)
     var isElement = arg && arg.__isNrtvElement == true || typeof arg.html == "function"
     var isRaw = typeof arg.__raw == "string"
+    var isTagName = arg.__nrtvElementTagName
     var isStyle = arg.__isNrtvElementStyle
     var isObject = typeof arg == "object"
-    var isAttributes = isObject && !isRaw && !isStyle
+    var isAttributes = isObject && !isRaw && !isStyle && !isTagName
     var isStringable = !!arg.toString
 
 
@@ -68,6 +71,8 @@ function generator() {
       return "selector"
     } else if (isString && !isSelector) {
       return "child"
+    } else if (isTagName) {
+      return "tagName"
     } else if (isAttributes) {
       return "attributes"
     } else if (isStyle) {
@@ -131,6 +136,8 @@ function generator() {
 
     if (type == "array") {
       addChildren(this, arg)
+    } else if (type == "tagName") {
+      this.tagName = arg.__nrtvElementTagName
     } else if (type == "child") {
       this.addChild(arg)
     } else if (type == "contents") {
@@ -374,6 +381,12 @@ function generator() {
     function() {
       return new ElementStyle(arguments)
     }
+
+  element.tag = function(tagName) {
+    return {
+      __nrtvElementTagName: tagName
+    }
+  }
 
   element.template = function() {
     var elementArgs = []
