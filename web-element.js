@@ -170,7 +170,7 @@ function generator() {
     })
   }
 
-  var whitelist = /^(\.|(a|body|br|button|canvas|div|form|h1|h2|h3|head|hr|html|iframe|img|input|label|li|link|meta|ol|option|p|script|select|span|style|textarea|title|ul|video)(\[|\.|$))/
+  var whitelist = /^(\.|(a|body|br|button|canvas|div|form|h1|h2|h3|head|hr|html|iframe|img|input|label|li|link|meta|ol|option|p|em|strong|underline|b|i|script|select|span|style|textarea|title|ul|video)(\[|\.|$))/
 
   function isASelector(string) {
     if (typeof string != "string") {
