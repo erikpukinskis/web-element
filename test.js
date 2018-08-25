@@ -1,6 +1,17 @@
 var runTest = require("run-test")(require)
 
 runTest(
+  "escape html",
+  ["./"],
+  function(expect, done, element) {
+    var el = element(element.escape("<br>&nbsp;"))
+    expect(el.html()).to.equal("<div>&lt;br&gt;&amp;nbsp;</div>")
+    done()
+  }
+)
+
+
+runTest(
   "custom tags",
   ["./"],
   function(expect, done, element) {
@@ -395,10 +406,8 @@ runTest(
   ["./", "function-call"],
   function(expect, done, element, functionCall) {
 
-    function dirt() {}
-
     var el = element()
-    el.onclick(functionCall(dirt))
+    el.onclick(functionCall("dirt"))
 
     expect(el.html()).to.equal("<div onclick='dirt()'></div>")
 

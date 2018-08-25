@@ -568,6 +568,15 @@ function generator() {
     return {__raw: html}
   }
 
+  element.escape = function(unsafe) {
+    var safe = unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+
+    return {__raw: safe}
+  }
+
   element.defineOn = function(bridge) {
     var binding = bridge.remember("web-element")
     if (binding) { return binding }

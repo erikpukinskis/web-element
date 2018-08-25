@@ -179,6 +179,28 @@ Generates
 </zoomable-image>
 ```
 
+If you have variable content and you want to ensure it is not interpreted as a tagname or a selector, you can use element.raw or element.escape:
+
+```javascript
+var someHtml = "<img/>"
+element(
+  element.raw(someHtml))
+```
+produces:
+```html
+<div><img/></div>
+```
+whereas
+```javascript
+var treatAsText = "<img/>"
+element(
+  element.escape(treatAsText))
+```
+produces:
+```html
+<div>&lt;img/&gt;</div>
+```
+
 ## Why?
 
 When someone tries to learn how to build web apps, they have to learn Javascript, HTML, and CSS all at once. Web-element lets them build web pages using only JavaScript.
