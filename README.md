@@ -174,11 +174,7 @@ el.addAttributes({
 Generates
 
 ```html
-<<<<<<< 3b86f15cdaa7886f7c4e8a375950463dd670e972
-<div class="foo" style="display: none" onclick="alert(\"hi\")" id="fj29" src="foo.png" width="320" height="240">
-=======
 <zoomable-image class="foo" style="display: none" onclick="alert(\"hi\")" id="fj29" src="foo.png" width="320" height="240">
->>>>>>> custom tag names
   <div>baby element</div>
 </zoomable-image>
 ```
