@@ -555,6 +555,8 @@ function generator() {
       }
       if (style.styleSource) {
         style = style.styleSource()
+      } else {
+        throw new Error("You can only add element.style and element.template instances to an element.stylesheet. You tried to add "+style)
       }
       el.children.push(style)
     }
