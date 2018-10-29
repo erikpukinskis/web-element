@@ -221,6 +221,9 @@ function generator() {
   }
 
   Element.prototype.addAttribute = function(key, value) {
+    if (typeof value != "string") {
+      throw new Error("HTML attribute values must be strings. Tried to set "+key+" to "+value+" on "+this.html())
+    }
     if (typeof this.attributes[key] != "undefined") {
       throw new Error("Tried to set "+key+" attribute on element to "+value+" but it was already set to "+this.attributes[key]+". I am but a lowly computer and resolving this is too much for me.")
     }
