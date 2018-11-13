@@ -521,7 +521,14 @@ function generator() {
 
   function getDescendantSource(descendantSelector, parentSelector, styles) {
 
-    var css = "\n" + parentSelector+descendantSelector + " {"
+    var parents = parentSelector.split(/\s?,\s?/)
+
+    var selector = parents.map(
+      function(parent) {
+        return parent+descendantSelector
+      }).join(", ")
+
+    var css = "\n" + selector + " {"
 
     for (var name in styles) {
       css += "\n  "+name+": "+styles[name]+";"

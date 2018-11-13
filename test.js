@@ -1,5 +1,7 @@
 var runTest = require("run-test")(require)
 
+
+
 runTest(
   "escape html",
   ["./"],
@@ -114,6 +116,8 @@ runTest(
 )
 
 
+
+
 runTest(
   "inline styles",
   ["./"],
@@ -162,6 +166,27 @@ runTest(
     done()
   }
 )
+
+
+runTest(
+  "descendant styles in the root selector",
+  ["./"],
+  function(expect, done, element) {
+    var red = element.style(
+      "body.big, body.small",{
+        " span": {
+          "color": "red"}})
+
+    var source = element.stylesheet(red).html()
+
+    expect(source).to.contain("body.big span")
+
+    expect(source).to.contain("body.small span")
+
+    done()
+  }
+)
+
 
 
 
