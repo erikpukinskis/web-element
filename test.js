@@ -169,12 +169,12 @@ runTest(
 
 
 runTest(
-  "descendant styles in the root selector",
+  "multiple targets in one selector",
   ["./"],
   function(expect, done, element) {
     var red = element.style(
       "body.big, body.small",{
-        " span": {
+        " span, p": {
           "color": "red"}})
 
     var source = element.stylesheet(red).html()
@@ -182,6 +182,10 @@ runTest(
     expect(source).to.contain("body.big span")
 
     expect(source).to.contain("body.small span")
+
+    expect(source).to.contain("body.big p")
+
+    expect(source).to.contain("body.small p")
 
     done()
   }
