@@ -145,7 +145,7 @@ function generator() {
     } else if (type == "selector") {
       this.addSelector(arg)
     } else if (type == "attributes") {
-      merge(this.attributes, arg)
+      this.addAttributes(arg)
     } else if (type == "style") {
       this.appendStyles(arg.properties)
     } else if (type == "stringable") {
@@ -221,9 +221,8 @@ function generator() {
   }
 
   Element.prototype.addAttribute = function(key, value) {
-    if (typeof value != "string") {
-      throw new Error("HTML attribute values must be strings. Tried to set "+key+" to "+value+" on "+this.html())
-    }
+    ensureValue(value, key)
+
     if (typeof this.attributes[key] != "undefined") {
       throw new Error("Tried to set "+key+" attribute on element to "+value+" but it was already set to "+this.attributes[key]+". I am but a lowly computer and resolving this is too much for me.")
     }
