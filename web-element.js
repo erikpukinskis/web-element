@@ -366,7 +366,7 @@ function generator() {
   var next = onServer ? 10000*100 : 10000
 
   function anId() {
-    var prefix = onServer ? "el-" : "brws-"
+    var prefix = onServer ? "node-" : "brws-"
     return prefix+(next++).toString(36)    
   }
 

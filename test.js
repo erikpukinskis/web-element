@@ -280,7 +280,7 @@ runTest(
 
     var el = element()
     var id = el.assignId()
-    expect(el.id).to.match(/el-[a-z0-9]{3}/)
+    expect(el.id).to.match(/node-[a-z0-9]{3}/)
     expect(id).to.equal(el.id)
     expect(el.html()).to.equal("<div id=\""+id+"\"></div>")
 
