@@ -362,17 +362,20 @@ function generator() {
       }
     }
 
+  var onServer = typeof document == "undefined"
+  var next = onServer ? 10000*100 : 10000
 
-
-  Element.next = typeof document == "undefined" ? 10000*100 : 10000
+  function anId() {
+    var prefix = onServer ? "el-" : "brws-"
+    return prefix+(next++).toString(36)    
+  }
 
   Element.prototype.assignId =
     function() {
-      return this.id || (
-        this.id = "el-"+(
-          Element.next++
-        ).toString(36)
-      )
+      if (!this.id) {
+        this.id = anId()
+      }
+      return this.id
     }
 
   function ElementStyle(args) {
@@ -613,6 +616,8 @@ function generator() {
     bridge.see("web-element", binding)
     return binding
   }
+
+  element.anId = anId
 
   return element
 }
