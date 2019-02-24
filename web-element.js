@@ -62,7 +62,6 @@ function generator() {
     var isAttributes = isObject && !isRaw && !isStyle && !isTagName
     var isStringable = !!arg.toString
 
-
     if (isArray) {
       return "array"
     } else if (isElement || isRaw) {
@@ -96,9 +95,7 @@ function generator() {
         if (this.constructor.name != "Element") {
           throw new Error("Tried run an element generator on "+this+" but it's not an element")
         }
-
         args.forEach(addArg.bind(this))
-
         return this
       }
 
@@ -170,9 +167,12 @@ function generator() {
     })
   }
 
-  var whitelist = /^(\.|(a|body|br|button|canvas|div|form|h1|h2|h3|head|hr|html|iframe|img|input|label|li|link|meta|ol|option|p|em|strong|underline|b|i|script|select|span|style|textarea|title|ul|video)(\[|\.|$))/
+  var whitelist = /^(\.|(a|body|br|button|canvas|div|form|h1|h2|h3|head|hr|html|iframe|img|input|label|li|link|meta|ol|option|p|em|strong|underline|b|i|script|select|span|style|textarea|title|ul|video)(\[|\.|#|$))/
 
   function isASelector(string) {
+    if (string.match && string.match(/^(\#[a-z0-9\_\-]+|\.[a-z0-9\_\-]+)+$/)) {
+      return true
+    }
     if (typeof string != "string") {
       return false
     }
@@ -183,20 +183,32 @@ function generator() {
   Element.prototype.addSelector = function(selector) {
     if (!selector) { selector = "" }
 
-    if (!selector.split) {
+    if (!selector.match) {
       throw new Error("Tried to add selector "+selector+" to web element "+this.html().slice(0,100)+", but it doesn't look like a string?")
     }
-    
-    var parts = selector.split(".")
-    var tagName = parts[0]
-    var classes = parts.slice(1)
 
-    if (tagName.length > 0) {
-      this.tagName = tagName
+    var tagNameMatch = selector.match(/^[a-z][a-z0-9-]*/)
+
+    if (tagNameMatch) {
+      this.tagName = tagNameMatch[0]
+      var remainder = selector.slice(
+        this.tagName.length)
+    } else {
+      var remainder = selector
     }
 
-    for(var i=0; i<classes.length; i++) {
-      this.classes.push(classes[i])
+    var idMatch = remainder.match(/^\#([a-z][a-z0-9-]*)/)
+
+    if (idMatch) {
+      this.id = idMatch[1]
+      remainder = remainder.slice(this.id.length)
+    }
+
+    var classesMatch = remainder.match(/^\.(.*)/)
+
+    if (classesMatch) {
+      var classes = classesMatch[1].split(".")
+      this.classes = this.classes.concat(classes)
     }
   }
 

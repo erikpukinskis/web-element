@@ -1,7 +1,6 @@
 var runTest = require("run-test")(require)
 
 
-
 runTest(
   "escape html",
   ["./"],
@@ -41,6 +40,7 @@ runTest(
   function(expect, done, element) {
 
     var generator = element.generator(["a"])
+
     var el = element()
     generator.apply(el)
     expect(el.html()).to.equal("<a></a>")
