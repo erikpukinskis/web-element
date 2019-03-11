@@ -1,5 +1,7 @@
 var runTest = require("run-test")(require)
 
+runTest.only(
+  "CSS keyframes")
 
 runTest(
   "escape html",
@@ -192,6 +194,22 @@ runTest(
 )
 
 
+runTest(
+  "CSS keyframes",[
+  "./"],
+  function(expect, done, element) {
+    var style = element.style(
+      "@keyframes flash",{
+      "from": {
+        "opacity": "0.1"},
+      "to": {
+        "opacity": "1.0"},
+      })
+
+    var css = style.styleSource().replace(/[\n\s]+/g, " ")
+
+    expect(css).to.equal("@keyframes flash { from { opacity: 0.1; } to { opacity: 1.0 } } ")
+  })
 
 
 runTest(
