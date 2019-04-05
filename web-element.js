@@ -482,21 +482,27 @@ function generator() {
     }
   }
 
-  function styleSource(identifer, properties) {
+  function styleSource(identifier, properties) {
       var mediaQueries = ""
       var descendants = ""
+      var keyframes = ""
 
       var css = "\n" 
-        + identifer
+        + identifier
         + " {"
+
+      var isKeyframe = identifier.match(/@keyframes/)
 
       for (key in properties) {
 
-        if (key.match(/@media/)) {
+        if (isKeyframe) {
+          keyframes += styleSource(key, properties[key])
+
+        } else if (key.match(/@media/)) {
 
           mediaQueries += getMediaSource(
               key,
-              identifer,
+              identifier,
               properties[key]
             )
 
@@ -504,7 +510,7 @@ function generator() {
 
           descendants += getDescendantSource(
               key,
-              identifer,
+              identifier,
               properties[key]
             )
 
@@ -513,7 +519,7 @@ function generator() {
         }
       }
 
-      return css + "\n}\n" +mediaQueries + descendants
+      return css + keyframes + "\n}\n" +mediaQueries + descendants
   }
 
   function stylePropertySource(key, value) {
@@ -533,6 +539,16 @@ function generator() {
     return css
   }
 
+  function getKeyframes(query, identifier, styles) {
+    debugger
+    var css = "\n" + query + " {\n" + identifier + " {"
+
+    for (var name in styles) {
+      css += "\n  "+name+" "+styles[name]+";"
+    }
+    css += "\n}\n}"
+    return css
+  }
   function getDescendantSource(descendantSelector, parentSelector, styles) {
 
     var parents = parentSelector.split(",")
