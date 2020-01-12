@@ -391,6 +391,9 @@ function generator() {
   }
 
   ElementStyle.prototype.styleSource = function() {
+    if (!this.identifier) {
+      throw new Error("Element styles must have a selector associated with them.")
+    }
     return styleSource(this.identifier, this.properties)
   }
 
@@ -431,6 +434,7 @@ function generator() {
       }
     }
 
+    assertSelector(elementArgs)
     generators.push(element.generator(elementArgs))
 
     // A template is different than an element. They have different interfaces. A template takes non-htmly stuff like a burger, or a house. Element takes tag names, classes, children, DOM attributes, etc.
@@ -465,6 +469,24 @@ function generator() {
     template.cssProperties = cssProperties
 
     return template
+  }
+
+  function assertSelector(args) {
+    var selector = getStyleIdentifier(args)
+
+    if (!selector) {
+      throw new Error(
+        "Templates must have a selector associated with them. You passed element.template("+JSON.stringify(args)+")")}
+
+    return !!selector
+    // var hasSomeCalasses = classes && this.classes.length
+
+    // var hasAnId = !!id
+
+    // var hasATagName = !!tagName
+
+    // if (!hasSomeClasses && !hasAnId && !hasATagName) {
+
   }
 
   element.template.container =
