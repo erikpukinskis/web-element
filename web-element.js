@@ -316,7 +316,7 @@ function generator() {
     function ensureValue(value, key) {
       if (typeof value != "string") {
         if (value && value.evalable) {
-          throw new Error("You passed a binding ("+value.evalable()+") as your onclick attribute. Did you mean to do yourFunction.evalable()?")
+          throw new Error("You passed a binding ("+value.evalable()+") as your "+key+" attribute. Did you mean to do yourFunction.evalable()?")
         } else {
           throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes object looks like this: "+stringify(this.attributes))
         }
