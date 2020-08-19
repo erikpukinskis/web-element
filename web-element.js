@@ -228,6 +228,9 @@ function generator() {
 
   Element.prototype.addAttributes = function(object) {
     for (var key in object) {
+      if (key === 'id') {
+        this.id = object[key]
+      }
       this.addAttribute(key, object[key])
     }
   }
