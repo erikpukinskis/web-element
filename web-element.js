@@ -261,7 +261,7 @@ function generator() {
 
       var html = openingTag.call(this)
 
-      if (stack.ids.indexOf(this.__uniqueId) >= 0) {  
+      if (stack.ids.indexOf(this.__uniqueId) >= 0) {
 
         console.log("element stack:\n  "+stack.html.join("\n  "))
 
@@ -304,7 +304,10 @@ function generator() {
       for (key in this.attributes || {}) {
         var value = this.attributes[key]
         ensureValue(value, key)
-        html = html + " " + key + "='" + escape(value) + "'"
+        html = html + "\n  " + key + "='" + escape(value) + "'"
+      }
+      if (Object.keys(this.attributes).length > 0) {
+        html = html + "\n"
       }
 
       html = html + ">"

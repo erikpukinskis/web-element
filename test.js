@@ -126,7 +126,7 @@ runTest(
       element.style({color: "red"})
     )
 
-    expect(red.html()).to.equal("<div style='color: red;'></div>")
+    expect(red.html()).to.equal("<div\n  style='color: red;'\n></div>")
 
     done()
   }
@@ -264,13 +264,13 @@ runTest(
   ["./"],
   function(expect, done, element) {
 
-    expect(element({onclick: "doSomething()"}).html()).to.equal("<div onclick='doSomething()'></div>")
+    expect(element({onclick: "doSomething()"}).html()).to.equal("<div\n  onclick='doSomething()'\n></div>")
 
     var el = element({
       onclick: "alert(\"foo\")"
     })
 
-    expect(el.html()).to.equal("<div onclick='alert(\"foo\")'></div>")
+    expect(el.html()).to.equal("<div\n  onclick='alert(\"foo\")'\n></div>")
 
     el.addAttributes({"data-foo": "bar"})
     
@@ -284,7 +284,7 @@ runTest("javascript attributes",
   function(expect, done, element) {
     var el = element("a", {href: "javascript:console.log('ezrp')"})
 
-    expect(el.html()).to.equal("<a href='javascript:console.log(&#39;ezrp&#39;)'></a>")
+    expect(el.html()).to.equal("<a\n  href='javascript:console.log(&#39;ezrp&#39;)'\n></a>")
     done()
   }
 )
@@ -456,7 +456,7 @@ runTest(
     var el = element()
     el.onclick(functionCall("dirt"))
 
-    expect(el.html()).to.equal("<div onclick='dirt()'></div>")
+    expect(el.html()).to.equal("<div\n  onclick='dirt()'\n></div>")
 
     done()
   }
