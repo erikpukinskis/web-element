@@ -534,7 +534,7 @@ function generator() {
               properties[key]
             )
 
-        } else if (key.match(/[$.#: ]/)) {
+        } else if (key.match(/[$.#:[ ]/)) {
 
           descendants += getDescendantSource(
               key,

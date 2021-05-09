@@ -414,6 +414,22 @@ runTest(
     ].join("\n"))
 
 
+    button = element.style("div", {
+      "[aria-checked=true]": {
+        "background": "green",
+      }
+    })
+
+    expect(button.styleSource().trim())
+    .to.equal([
+      "div {",
+      "}",
+      "",
+      "div[aria-checked=true] {",
+      "  background: green;",
+      "}",
+    ].join("\n"))
+
     done()
   }
 )
