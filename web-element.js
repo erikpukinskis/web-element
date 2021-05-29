@@ -661,6 +661,14 @@ function generator() {
     return binding
   }
 
+  element.value = {
+    __nrtvFunctionCallRawCode: "event.target.value"
+  }
+
+  element.event = {
+    __nrtvFunctionCallRawCode: "event"
+  }
+
   element.anId = anId
 
   return element
