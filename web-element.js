@@ -231,12 +231,12 @@ function generator() {
       if (key === 'id') {
         this.id = object[key]
       }
-      this.addAttribute(key, object[key])
+      this.addAttribute(key, object[key], object)
     }
   }
 
-  Element.prototype.addAttribute = function(key, value) {
-    ensureValue(value, key)
+  Element.prototype.addAttribute = function(key, value, _context) {
+    ensureValue(value, key, _context)
 
     if (typeof this.attributes[key] != "undefined") {
       throw new Error("Tried to set "+key+" attribute on element to "+value+" but it was already set to "+this.attributes[key]+". I am but a lowly computer and resolving this is too much for me.")
@@ -319,12 +319,15 @@ function generator() {
       return value.replace(/'/g, "&#39;")
     }
 
-    function ensureValue(value, key) {
+    function ensureValue(value, key, _context) {
       if (typeof value != "string") {
         if (value && value.evalable) {
           throw new Error("You passed a binding ("+value.evalable()+") as your "+key+" attribute. Did you mean to do yourFunction.evalable()?")
         } else {
-          throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes object looks like this: "+stringify(this.attributes))
+          var loggable = _context ? Object.assign({}, _context) : {}
+          loggable[key] = "_nrtvWebElementMissingValue"
+          var logged = JSON.stringify(loggable, null, 2).replace("\"_nrtvWebElementMissingValue\",", "<<< MISSING VALUE >>")
+          throw new Error("Trying to set the "+key+" attribute on a web-element to "+stringify(value)+" that seems weird. It should be a string. The attributes look like this:\n\nelement.addAttributes("+logged+")\n")
         }
       }
     }
